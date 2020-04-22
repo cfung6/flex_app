@@ -6,7 +6,7 @@ class Sneaker {
   final String releaseDate;
   final String bigImage, medImage, smallImage;
 
-  Sneaker({
+  const Sneaker({
     @required this.name,
     @required this.price,
     @required this.releaseDate,

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 class SneakerTile extends StatelessWidget {
   final Sneaker sneaker;
 
-  SneakerTile({
+  const SneakerTile({
     @required this.sneaker,
   });
 

@@ -29,7 +29,7 @@ class SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     final widthMax = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         height: 60.0,
@@ -51,7 +51,7 @@ class SearchBarState extends State<SearchBar> {
                       .subtitle1
                       .copyWith(fontSize: 20.0),
                   decoration: InputDecoration(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     suffixIcon: _isEmpty
                         ? null
                         : IconButton(

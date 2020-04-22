@@ -8,15 +8,16 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  Color red = const Color(0xFFC13F4D);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            SizedBox(height: 60.0),
+            const SizedBox(height: 60.0),
             Column(
               children: <Widget>[
                 Image.asset(
@@ -24,7 +25,7 @@ class _LoginState extends State<Login> {
                   width: 100.0,
                   height: 100.0,
                 ),
-                Text(
+                const Text(
                   'FLEX',
                   style: TextStyle(
                     fontSize: 20.0,
@@ -32,7 +33,7 @@ class _LoginState extends State<Login> {
                 ),
               ],
             ),
-            SizedBox(height: 60.0),
+            const SizedBox(height: 60.0),
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
@@ -40,7 +41,7 @@ class _LoginState extends State<Login> {
                 labelText: 'Username',
               ),
             ),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
@@ -52,7 +53,7 @@ class _LoginState extends State<Login> {
             ButtonBar(
               children: <Widget>[
                 FlatButton(
-                  textColor: Color(0xFFC13F4D),
+                  textColor: red,
                   child: Text('Clear'),
                   onPressed: () {
                     _usernameController.clear();
@@ -60,25 +61,25 @@ class _LoginState extends State<Login> {
                   },
                 ),
                 RaisedButton(
-                  color: Color(0xFFC13F4D),
+                  color: red,
                   child: Text('Sign up'),
                   onPressed: () {},
                 ),
               ],
             ),
-            SizedBox(height: 100.0),
+            const SizedBox(height: 100.0),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        label: Text('Login'),
+        label: const Text('Login'),
         icon: Image.asset(
           'assets/images/login.png',
           width: 25.0,
           height: 25.0,
         ),
-        backgroundColor: Color(0xFFC13F4D),
+        backgroundColor: red,
       ),
     );
   }

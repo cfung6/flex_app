@@ -1,8 +1,8 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flex/search_bar.dart';
 import 'package:flex/sneaker.dart';
-import 'package:dio/dio.dart';
 import 'package:flex/sneaker_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +12,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class SearchPageState extends State<SearchPage> {
-  var _query = "";
-  var _controller = TextEditingController();
-  var _focusNode = FocusNode();
+  String _query = "";
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class SearchPageState extends State<SearchPage> {
             //TODO: Implement menu
           },
         ),
-        title: Text('FLEX'),
+        title: const Text('FLEX'),
         actions: <Widget>[],
       ),
       body: Column(
