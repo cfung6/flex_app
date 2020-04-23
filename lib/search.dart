@@ -24,50 +24,35 @@ class SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        elevation: 0.0,
-        textTheme: Theme.of(context).textTheme,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            //TODO: Implement menu
+    return Column(
+      children: <Widget>[
+        SearchBar(
+          controller: _controller,
+          focusNode: _focusNode,
+          searchPage: this,
+        ),
+        FutureBuilder(
+          future: _constructList(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                log(snapshot.error.toString());
+                //TODO: error ui
+                return Container();
+              }
+              return _buildSearchResults(snapshot.data);
+            } else {
+              return Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                  ),
+                ),
+              );
+            }
           },
         ),
-        title: const Text('FLEX'),
-        actions: <Widget>[],
-      ),
-      body: Column(
-        children: <Widget>[
-          SearchBar(
-            controller: _controller,
-            focusNode: _focusNode,
-            searchPage: this,
-          ),
-          FutureBuilder(
-            future: _constructList(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
-                  log(snapshot.error.toString());
-                  //TODO: error ui
-                  return Container();
-                }
-                return _buildSearchResults(snapshot.data);
-              } else {
-                return Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
+      ],
     );
   }
 

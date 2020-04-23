@@ -1,6 +1,9 @@
-import 'package:flex/login.dart';
-import 'package:flex/search.dart';
+import 'package:flex/provider_notifiers/DrawerStateNotifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+
+import 'home.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,9 +11,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: SearchPage(),
+    return MultiProvider(
+      child: MaterialApp(
+        title: 'Flex App',
+        home: Home(),
+      ),
+      providers: <SingleChildWidget>[
+        ChangeNotifierProvider<DrawerStateNotifier>(
+          create: (_) => DrawerStateNotifier(),
+        ),
+      ],
     );
   }
 }
