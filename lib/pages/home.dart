@@ -1,9 +1,8 @@
 import 'package:flex/provider_notifiers/DrawerStateNotifier.dart';
+import 'package:flex/ui/my_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'file:///C:/Users/chris/StudioProjects/flex/lib/ui/my_drawer.dart';
 
 class Home extends StatelessWidget {
   @override

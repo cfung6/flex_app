@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flex/ui/search_bar.dart';
+import 'package:flex/ui/sneaker.dart';
+import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
-
-import 'file:///C:/Users/chris/StudioProjects/flex/lib/ui/search_bar.dart';
-import 'file:///C:/Users/chris/StudioProjects/flex/lib/ui/sneaker.dart';
-import 'file:///C:/Users/chris/StudioProjects/flex/lib/ui/sneaker_tile.dart';
 
 class SearchPage extends StatefulWidget {
   @override

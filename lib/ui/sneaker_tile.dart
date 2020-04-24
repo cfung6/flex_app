@@ -1,6 +1,5 @@
+import 'package:flex/ui/sneaker.dart';
 import 'package:flutter/cupertino.dart';
-
-import 'file:///C:/Users/chris/StudioProjects/flex/lib/ui/sneaker.dart';
 
 class SneakerTile extends StatelessWidget {
   final Sneaker sneaker;
