@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../login.dart';
-import '../search.dart';
+import '../pages/login.dart';
+import '../pages/search.dart';
 
 class DrawerStateNotifier with ChangeNotifier {
   String _currentScreen = "Login";

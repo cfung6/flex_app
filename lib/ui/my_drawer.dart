@@ -18,6 +18,10 @@ class MyDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Login/Register'),
+              leading: Image.asset(
+                'assets/images/login.png',
+                width: 20.0,
+              ),
               onTap: () {
                 Navigator.of(context).pop();
                 navigation.updateScreen('Login');
@@ -25,6 +29,9 @@ class MyDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Search'),
+              leading: Icon(
+                Icons.search,
+              ),
               onTap: () {
                 Navigator.of(context).pop();
                 navigation.updateScreen('Search');
