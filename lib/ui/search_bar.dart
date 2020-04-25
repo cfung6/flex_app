@@ -1,10 +1,10 @@
-import 'package:flex/pages/search.dart';
+import 'package:flex/screens/search.dart';
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
-  final SearchPageState searchPage;
+  final SearchState searchPage;
 
   const SearchBar({
     @required this.controller,

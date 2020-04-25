@@ -1,9 +1,8 @@
 import 'package:flex/provider_notifiers/DrawerStateNotifier.dart';
+import 'package:flex/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-
-import 'pages/home.dart';
 
 void main() => runApp(MyApp());
 

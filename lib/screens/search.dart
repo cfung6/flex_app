@@ -1,17 +1,17 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flex/models/sneaker.dart';
 import 'package:flex/ui/search_bar.dart';
-import 'package:flex/ui/sneaker.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
 
-class SearchPage extends StatefulWidget {
+class Search extends StatefulWidget {
   @override
-  State<SearchPage> createState() => SearchPageState();
+  State<Search> createState() => SearchState();
 }
 
-class SearchPageState extends State<SearchPage> {
+class SearchState extends State<Search> {
   String _query = "";
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
