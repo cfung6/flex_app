@@ -6,9 +6,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  Color red = const Color(0xFFC13F4D);
+  String _username = '';
+  String _password = '';
+  Color _red = const Color(0xFFC13F4D);
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +34,41 @@ class _LoginState extends State<Login> {
               ],
             ),
             const SizedBox(height: 60.0),
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                filled: true,
-                labelText: 'Username',
+            Form(
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'Username',
+                    ),
+                    onChanged: (str) {
+                      setState(() {
+                        _username = str;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 15.0),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'Password',
+                    ),
+                    onChanged: (str) {
+                      setState(() {
+                        _password = str;
+                      });
+                    },
+                    obscureText: true,
+                  )
+                ],
               ),
-            ),
-            const SizedBox(height: 15.0),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                filled: true,
-                labelText: 'Password',
-              ),
-              obscureText: true,
             ),
             ButtonBar(
               children: <Widget>[
+                Text("Don't have an account?"),
                 FlatButton(
-                  textColor: red,
-                  child: Text('Clear'),
-                  onPressed: () {
-                    _usernameController.clear();
-                    _passwordController.clear();
-                  },
-                ),
-                RaisedButton(
-                  color: red,
+                  textColor: _red,
                   child: Text('Sign up'),
                   onPressed: () {},
                 ),
@@ -73,13 +80,13 @@ class _LoginState extends State<Login> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        label: const Text('Login'),
+        label: const Text('Sign in'),
         icon: Image.asset(
           'assets/images/login.png',
           width: 25.0,
           height: 25.0,
         ),
-        backgroundColor: red,
+        backgroundColor: _red,
       ),
     );
   }

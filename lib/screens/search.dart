@@ -80,7 +80,6 @@ class SearchState extends State<Search> {
       int count = response.data['count'];
 //      count = count < limit ? count : limit;
 
-      log(response.data.toString());
       int j = 0;
       for (int i = 0; i < count && j < displayLimit; i++) {
         Sneaker s = Sneaker.fromJSON(response.data, i);
@@ -98,7 +97,6 @@ class SearchState extends State<Search> {
   }
 
   Widget _buildSearchResults(List<SneakerTile> sneakerList) {
-    log('sneakerlist: ' + sneakerList.join(', '));
     return Expanded(
       child: GridView.builder(
         gridDelegate:

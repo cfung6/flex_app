@@ -16,6 +16,15 @@ class Auth {
     }
   }
 
+  Future<void> signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(_createUser);
   }

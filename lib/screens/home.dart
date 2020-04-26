@@ -1,4 +1,4 @@
-import 'package:flex/provider_notifiers/DrawerStateNotifier.dart';
+import 'package:flex/provider_notifiers/drawer_notifier.dart';
 import 'package:flex/ui/my_appbar.dart';
 import 'package:flex/ui/my_drawer.dart';
 import 'package:flutter/material.dart';
