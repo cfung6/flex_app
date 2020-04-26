@@ -15,4 +15,12 @@ class Auth {
       return null;
     }
   }
+
+  Stream<User> get user {
+    return _auth.onAuthStateChanged.map(_createUser);
+  }
+
+  User _createUser(FirebaseUser user) {
+    return user == null ? null : User(userInfo: user);
+  }
 }

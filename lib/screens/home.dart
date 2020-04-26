@@ -8,9 +8,10 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: Provider
-          .of<DrawerStateNotifier>(context)
-          .currentScreen),
+      appBar: MyAppBar(
+          title: Provider
+              .of<DrawerStateNotifier>(context)
+              .currentScreen),
       drawer: MyDrawer(),
       body: Consumer<DrawerStateNotifier>(
         builder: (context, navigationProvider, _) =>
