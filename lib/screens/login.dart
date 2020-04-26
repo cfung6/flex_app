@@ -1,3 +1,4 @@
+import 'package:flex/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -8,7 +9,11 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String _username = '';
   String _password = '';
-  Color _red = const Color(0xFFC13F4D);
+
+  final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _red = const Color(0xFFC13F4D);
 
   @override
   Widget build(BuildContext context) {
@@ -35,32 +40,37 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(height: 60.0),
             Form(
+              key: _formKey,
               child: Column(
                 children: <Widget>[
                   TextFormField(
+                    controller: _usernameController,
                     decoration: InputDecoration(
                       filled: true,
                       labelText: 'Username',
                     ),
-                    onChanged: (str) {
-                      setState(() {
-                        _username = str;
-                      });
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return 'Please enter your username';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 15.0),
                   TextFormField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      labelText: 'Password',
-                    ),
-                    onChanged: (str) {
-                      setState(() {
-                        _password = str;
-                      });
-                    },
-                    obscureText: true,
-                  )
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        labelText: 'Password',
+                      ),
+                      obscureText: true,
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
+                      }
+                  ),
                 ],
               ),
             ),
@@ -70,7 +80,10 @@ class _LoginState extends State<Login> {
                 FlatButton(
                   textColor: _red,
                   child: Text('Sign up'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => SignUp()));
+                  },
                 ),
               ],
             ),
@@ -79,7 +92,14 @@ class _LoginState extends State<Login> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            setState(() {
+              _username = _usernameController.text;
+              _password = _passwordController.text;
+            });
+          }
+        },
         label: const Text('Sign in'),
         icon: Image.asset(
           'assets/images/login.png',
