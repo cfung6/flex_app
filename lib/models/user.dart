@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class User {
-  final FirebaseUser userInfo;
+  FirebaseUser userInfo;
 
   User({this.userInfo});
 

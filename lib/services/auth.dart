@@ -25,6 +25,33 @@ class Auth {
     }
   }
 
+  ///throws: FirebaseAuthWeakPasswordException,
+  ///        FirebaseAuthInvalidCredentialsException,
+  ///        FirebaseAuthUserCollisionException
+  Future<User> register(String email, String password,
+      String displayName) async {
+    AuthResult res = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    return User(userInfo: res.user);
+  }
+
+  Future<User> updateDisplayName(User user, String displayName) async {
+    try {
+      UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+      userUpdateInfo.displayName = displayName;
+      log('1');
+      await user.userInfo.updateProfile(userUpdateInfo);
+      await user.userInfo.reload();
+      user.userInfo = await _auth.currentUser();
+
+      log('2');
+      return user;
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(_createUser);
   }

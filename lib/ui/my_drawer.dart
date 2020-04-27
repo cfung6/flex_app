@@ -18,7 +18,7 @@ class MyDrawer extends StatelessWidget {
     } else if (user.userInfo.isAnonymous) {
       userName = 'Anonymous';
     } else {
-      userName = user.userInfo.uid;
+      userName = user.userInfo.displayName;
     }
 
     return SafeArea(
@@ -30,7 +30,9 @@ class MyDrawer extends StatelessWidget {
 //              accountEmail: Text(''),
 //            ),
             DrawerHeader(
-              decoration: BoxDecoration(color: const Color(0xFFC13F4D)),
+              decoration: BoxDecoration(color: Theme
+                  .of(context)
+                  .primaryColor),
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Column(

@@ -34,8 +34,17 @@ class MyApp extends StatelessWidget {
 }
 
 ThemeData _buildTheme() {
-  return ThemeData.light().copyWith(
+  final ThemeData base = ThemeData.light();
+  return base.copyWith(
     primaryColor: jordanRed,
     accentColor: jordanRed,
+    buttonTheme: ButtonThemeData(
+      buttonColor: jordanRed,
+      colorScheme: base.colorScheme.copyWith(
+        primary: jordanRed,
+        secondary: jordanRed,
+      ),
+      textTheme: ButtonTextTheme.primary,
+    ),
   );
 }

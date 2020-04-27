@@ -7,13 +7,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String _username = '';
+  String _email = '';
   String _password = '';
 
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _red = const Color(0xFFC13F4D);
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +43,14 @@ class _LoginState extends State<Login> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                    controller: _usernameController,
+                    controller: _emailController,
                     decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Username',
+                      labelText: 'Email',
                     ),
                     validator: (val) {
                       if (val.isEmpty) {
-                        return 'Please enter your username';
+                        return 'Please enter your email';
                       }
                       return null;
                     },
@@ -78,7 +77,11 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 Text("Don't have an account?"),
                 FlatButton(
-                  textColor: _red,
+                  textColor: Theme
+                      .of(context)
+                      .buttonTheme
+                      .colorScheme
+                      .primary,
                   child: Text('Sign up'),
                   onPressed: () {
                     Navigator.of(context)
@@ -95,7 +98,7 @@ class _LoginState extends State<Login> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             setState(() {
-              _username = _usernameController.text;
+              _email = _emailController.text;
               _password = _passwordController.text;
             });
           }
@@ -106,7 +109,11 @@ class _LoginState extends State<Login> {
           width: 25.0,
           height: 25.0,
         ),
-        backgroundColor: _red,
+        backgroundColor: Theme
+            .of(context)
+            .buttonTheme
+            .colorScheme
+            .primary,
       ),
     );
   }

@@ -8,7 +8,9 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFFC13F4D),
+      backgroundColor: Theme
+          .of(context)
+          .primaryColor,
       elevation: 0.0,
       textTheme: Theme.of(context).textTheme,
       title: Text(
