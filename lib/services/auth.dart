@@ -35,17 +35,18 @@ class Auth {
     return User(userInfo: res.user);
   }
 
-  Future<User> updateDisplayName(User user, String displayName) async {
+  Future<User> updateDisplayName(String displayName) async {
     try {
       UserUpdateInfo userUpdateInfo = UserUpdateInfo();
       userUpdateInfo.displayName = displayName;
-      log('1');
-      await user.userInfo.updateProfile(userUpdateInfo);
-      await user.userInfo.reload();
-      user.userInfo = await _auth.currentUser();
+      FirebaseUser user = await _auth.currentUser();
 
+      log('1');
+      await user.updateProfile(userUpdateInfo);
+      await user.reload();
+      user = await _auth.currentUser();
       log('2');
-      return user;
+      return User(userInfo: user);
     } catch (e) {
       log(e.toString());
       return null;

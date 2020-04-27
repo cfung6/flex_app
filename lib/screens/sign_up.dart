@@ -160,7 +160,7 @@ class _SignUpState extends State<SignUp> {
   Future<User> _tryToRegister() async {
     try {
       User user = await _auth.register(_email, _password, _displayName);
-      user = await _auth.updateDisplayName(user, _displayName);
+      user = await _auth.updateDisplayName(_displayName);
       return user;
     } catch (e) {
       if (!(e is PlatformException)) {
