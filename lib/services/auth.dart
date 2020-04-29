@@ -3,24 +3,24 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flex/models/user.dart';
-import 'package:rxdart/rxdart.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final StreamController<FirebaseUser> _userReloadStreamController =
-  StreamController<FirebaseUser>.broadcast();
-  Stream<FirebaseUser> _onAuthStateChangedOrUserReload;
 
-  Auth() {
-    _onAuthStateChangedOrUserReload =
-        _mergeStreamWithUserReload(_auth.onAuthStateChanged);
+//  final StreamController<FirebaseUser> _userReloadStreamController =
+//      StreamController<FirebaseUser>.broadcast();
+//  Stream<FirebaseUser> _onAuthStateChangedOrUserReload;
 
-    _onAuthStateChangedOrUserReload.listen((event) {
-      print(
-          "Notifying user AND auth state listeners about user (display name: ${event
-              .displayName})");
-    });
-  }
+//  Auth() {
+//    _onAuthStateChangedOrUserReload =
+//        _mergeStreamWithUserReload(_auth.onAuthStateChanged);
+//
+//    _onAuthStateChangedOrUserReload.listen((event) {
+//      print(
+//          "Notifying user AND auth state listeners about user (display name: ${event
+//              .displayName})");
+//    });
+//  }
 
   Future<User> signInAnon() async {
     try {
@@ -35,6 +35,17 @@ class Auth {
   Future<void> signOut() async {
     try {
       return await _auth.signOut();
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  Future<User> signInWithEmail(String email, String password) async {
+    try {
+      AuthResult res = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return _createUser(res.user);
     } catch (e) {
       log(e.toString());
       return null;
@@ -57,13 +68,11 @@ class Auth {
       userUpdateInfo.displayName = displayName;
       FirebaseUser user = await _auth.currentUser();
 
-      log('1');
       await user.updateProfile(userUpdateInfo);
       await user.reload();
       user = await _auth.currentUser();
-      log('2');
 
-      _userReloadStreamController.add(user);
+//      _userReloadStreamController.add(user);
       return User(userInfo: user);
     } catch (e) {
       log(e.toString());
@@ -72,13 +81,14 @@ class Auth {
   }
 
   Stream<User> get user {
-    return _onAuthStateChangedOrUserReload.map(_createUser);
+//    return _onAuthStateChangedOrUserReload.map(_createUser);
+    return _auth.onAuthStateChanged.map(_createUser);
   }
 
-  Stream<FirebaseUser> _mergeStreamWithUserReload(Stream<FirebaseUser> stream) {
-    return Rx.merge([stream, _userReloadStreamController.stream]).publishValue()
-      ..connect();
-  }
+//  Stream<FirebaseUser> _mergeStreamWithUserReload(Stream<FirebaseUser> stream) {
+//    return Rx.merge([stream, _userReloadStreamController.stream]).publishValue()
+//      ..connect();
+//  }
 
   User _createUser(FirebaseUser user) {
     return user == null ? null : User(userInfo: user);

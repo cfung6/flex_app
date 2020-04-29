@@ -1,5 +1,8 @@
 import 'package:flex/screens/sign_up.dart';
+import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
+
+import 'home.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,10 +12,14 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String _email = '';
   String _password = '';
+  String _error = '';
 
   final _formKey = GlobalKey<FormState>();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final Auth _auth = Auth();
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +75,7 @@ class _LoginState extends State<Login> {
                           return 'Please enter your password';
                         }
                         return null;
-                      }
-                  ),
+                      }),
                 ],
               ),
             ),
@@ -90,17 +96,34 @@ class _LoginState extends State<Login> {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 12.0,
+            ),
+            Text(
+              _error,
+              style: TextStyle(color: Colors.red, fontSize: 14.0),
+            ),
             const SizedBox(height: 100.0),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState.validate()) {
             setState(() {
               _email = _emailController.text;
               _password = _passwordController.text;
             });
+
+            dynamic result = await _auth.signInWithEmail(_email, _password);
+            if (result == null) {
+              setState(() {
+                _error = 'Incorrect email or password';
+              });
+            }
+
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
           }
         },
         label: const Text('Sign in'),

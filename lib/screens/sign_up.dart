@@ -88,6 +88,7 @@ class _SignUpState extends State<SignUp> {
                   }
                   return _passwordError;
                 },
+                obscureText: true,
               ),
               const SizedBox(height: 20.0),
               TextFormField(
@@ -102,6 +103,7 @@ class _SignUpState extends State<SignUp> {
                   }
                   return _passwordError;
                 },
+                obscureText: true,
               ),
               const SizedBox(height: 40.0),
               Center(
@@ -125,7 +127,7 @@ class _SignUpState extends State<SignUp> {
 //                            .of<User>(context, listen: false)
 //                            .userInfo
 //                            .displayName}');
-                        Navigator.of(context).push(
+                        Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (_) => Home()));
                       }
                     }
