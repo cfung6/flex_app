@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider<User>.value(
           value: Auth().user,
+          updateShouldNotify: (previous, current) => previous != current,
         ),
       ],
     );

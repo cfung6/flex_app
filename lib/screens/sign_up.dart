@@ -4,7 +4,8 @@ import 'package:flex/models/user.dart';
 import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+
+import 'home.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -120,12 +121,12 @@ class _SignUpState extends State<SignUp> {
                     if (_formKey.currentState.validate()) {
                       User user = await _tryToRegister();
                       if (_formKey.currentState.validate() && user != null) {
-                        log('current ${Provider
-                            .of<User>(context, listen: false)
-                            .userInfo
-                            .displayName}');
-//                        Navigator.of(context).push(
-//                            MaterialPageRoute(builder: (_) => Home()));
+//                        log('current ${Provider
+//                            .of<User>(context, listen: false)
+//                            .userInfo
+//                            .displayName}');
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => Home()));
                       }
                     }
                   },
