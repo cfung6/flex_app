@@ -1,3 +1,4 @@
+import 'package:flex/models/user.dart';
 import 'package:flex/screens/sign_up.dart';
 import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -120,9 +121,12 @@ class _LoginState extends State<Login> {
             });
 
             try {
-              await _auth.signInWithEmail(_email, _password);
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => Home()), (r) => false);
+              User user = await _auth.signInWithEmail(_email, _password);
+
+              if (user != null) {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => Home()), (r) => false);
+              }
             } catch (e) {
               setState(() {
                 if (!(e is PlatformException)) {
