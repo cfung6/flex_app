@@ -42,14 +42,9 @@ class Auth {
   }
 
   Future<User> signInWithEmail(String email, String password) async {
-    try {
-      AuthResult res = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      return _createUser(res.user);
-    } catch (e) {
-      log(e.toString());
-      return null;
-    }
+    AuthResult res = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    return _createUser(res.user);
   }
 
   ///throws: FirebaseAuthWeakPasswordException,

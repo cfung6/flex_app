@@ -1,6 +1,7 @@
 import 'package:flex/screens/sign_up.dart';
 import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'home.dart';
 
@@ -99,9 +100,12 @@ class _LoginState extends State<Login> {
             const SizedBox(
               height: 12.0,
             ),
-            Text(
-              _error,
-              style: TextStyle(color: Colors.red, fontSize: 14.0),
+            Center(
+              child: Text(
+                _error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
+                textAlign: TextAlign.center,
+              ),
             ),
             const SizedBox(height: 100.0),
           ],
@@ -115,15 +119,32 @@ class _LoginState extends State<Login> {
               _password = _passwordController.text;
             });
 
-            dynamic result = await _auth.signInWithEmail(_email, _password);
-            if (result == null) {
+            try {
+              await _auth.signInWithEmail(_email, _password);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => Home()), (r) => false);
+            } catch (e) {
               setState(() {
-                _error = 'Incorrect email or password';
+                if (!(e is PlatformException)) {
+                  _error = 'Unexpected error has occurred. Try again later.';
+                  return;
+                }
+
+                switch (e.code) {
+                  case 'ERROR_TOO_MANY_REQUESTS':
+                    {
+                      _error =
+                      'Too many unsuccessful login attempts. Please try again later.';
+                      return;
+                    }
+                  default:
+                    {
+                      _error = 'Incorrect email or password.';
+                      return;
+                    }
+                }
               });
             }
-
-            Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
           }
         },
         label: const Text('Sign in'),
