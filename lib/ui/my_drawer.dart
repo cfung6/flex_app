@@ -1,3 +1,4 @@
+import 'package:flex/auth_listener.dart';
 import 'package:flex/models/user.dart';
 import 'package:flex/provider_notifiers/drawer_notifier.dart';
 import 'package:flex/services/auth.dart';
@@ -62,6 +63,9 @@ class MyDrawer extends StatelessWidget {
                       ),
                       onPressed: () async {
                         await _auth.signOut();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (_) => AuthListener()),
+                                (r) => false);
                       },
                     ),
                   ],

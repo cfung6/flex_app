@@ -127,8 +127,9 @@ class _SignUpState extends State<SignUp> {
 //                            .of<User>(context, listen: false)
 //                            .userInfo
 //                            .displayName}');
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (_) => Home()));
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (_) => Home()),
+                                (r) => false);
                       }
                     }
                   },
