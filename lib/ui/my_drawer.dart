@@ -23,55 +23,94 @@ class MyDrawer extends StatelessWidget {
     }
 
     return SafeArea(
-      child: Drawer(
-        child: ListView(
-          children: <Widget>[
+      child: userName == null ? _buildFutureDrawer(notifier) : _buildDrawer(
+          context, userName, notifier),
+    );
+  }
+
+  //if user data hasn't updated locally, ask Firebase Auth for the current user data
+  Widget _buildFutureDrawer(DrawerStateNotifier notifier) {
+    return FutureBuilder(
+      future: _auth.currentUser(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return _buildDrawer(context, 'Not signed in', notifier);
+          } else {
+            return _buildDrawer(
+                context, snapshot.data.userInfo.displayName, notifier);
+          }
+        } else {
+          return Column(
+            children: <Widget>[
+              Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context, String userName,
+      DrawerStateNotifier notifier) {
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
 //            UserAccountsDrawerHeader(
 //              accountName: Text('chris'),
 //              accountEmail: Text(''),
 //            ),
-            DrawerHeader(
-              decoration: BoxDecoration(color: Theme
-                  .of(context)
-                  .primaryColor),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      userName,
-                      style: Theme
+          DrawerHeader(
+            decoration:
+            BoxDecoration(color: Theme
+                .of(context)
+                .primaryColor),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    userName,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline6
+                        .copyWith(color: Colors.white),
+                  ),
+                  SizedBox(height: 5.0),
+                  FlatButton(
+                    child: Text(
+                      'Sign out',
+                      style:
+                      Theme
                           .of(context)
                           .textTheme
-                          .headline6
-                          .copyWith(color: Colors.white),
-                    ),
-                    SizedBox(height: 5.0),
-                    FlatButton(
-                      child: Text(
-                        'Sign out',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(
-                          color: Colors.cyan[400],
-                          fontSize: 15.0,
-                        ),
+                          .subtitle2
+                          .copyWith(
+                        color: Colors.cyan[400],
+                        fontSize: 15.0,
                       ),
-                      onPressed: () async {
-                        await _auth.signOut();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (_) => AuthListener()),
-                                (r) => false);
-                      },
                     ),
-                  ],
-                ),
+                    onPressed: () async {
+                      await _auth.signOut();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (_) => AuthListener()),
+                              (r) => false);
+                    },
+                  ),
+                ],
               ),
             ),
+          ),
 //            ListTile(
 //              title: Text('Sign in / Register'),
 //              leading: Image.asset(
@@ -83,18 +122,17 @@ class MyDrawer extends StatelessWidget {
 //                notifier.updateScreen('Sign in / Register');
 //              },
 //            ),
-            ListTile(
-              title: Text('Search'),
-              leading: Icon(
-                Icons.search,
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                notifier.updateScreen('Search');
-              },
+          ListTile(
+            title: Text('Search'),
+            leading: Icon(
+              Icons.search,
             ),
-          ],
-        ),
+            onTap: () {
+              Navigator.of(context).pop();
+              notifier.updateScreen('Search');
+            },
+          ),
+        ],
       ),
     );
   }

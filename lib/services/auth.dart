@@ -10,13 +10,13 @@ class Auth {
 //  final StreamController<FirebaseUser> _userReloadStreamController =
 //      StreamController<FirebaseUser>.broadcast();
 //  Stream<FirebaseUser> _onAuthStateChangedOrUserReload;
-
+//
 //  Auth() {
 //    _onAuthStateChangedOrUserReload =
 //        _mergeStreamWithUserReload(_auth.onAuthStateChanged);
 //
 //    _onAuthStateChangedOrUserReload.listen((event) {
-//      print(
+//      log(
 //          "Notifying user AND auth state listeners about user (display name: ${event
 //              .displayName})");
 //    });
@@ -73,6 +73,11 @@ class Auth {
       log(e.toString());
       return null;
     }
+  }
+
+  Future<User> currentUser() async {
+    FirebaseUser user = await _auth.currentUser();
+    return User(userInfo: user);
   }
 
   Stream<User> get user {
