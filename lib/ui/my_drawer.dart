@@ -23,8 +23,9 @@ class MyDrawer extends StatelessWidget {
     }
 
     return SafeArea(
-      child: userName == null ? _buildFutureDrawer(notifier) : _buildDrawer(
-          context, userName, notifier),
+      child: userName == null
+          ? _buildFutureDrawer(notifier)
+          : _buildDrawer(context, userName, notifier),
     );
   }
 
@@ -67,8 +68,7 @@ class MyDrawer extends StatelessWidget {
 //              accountEmail: Text(''),
 //            ),
           DrawerHeader(
-            decoration:
-            BoxDecoration(color: Theme
+            decoration: BoxDecoration(color: Theme
                 .of(context)
                 .primaryColor),
             child: Align(
@@ -89,8 +89,7 @@ class MyDrawer extends StatelessWidget {
                   FlatButton(
                     child: Text(
                       'Sign out',
-                      style:
-                      Theme
+                      style: Theme
                           .of(context)
                           .textTheme
                           .subtitle2
@@ -102,8 +101,7 @@ class MyDrawer extends StatelessWidget {
                     onPressed: () async {
                       await _auth.signOut();
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (_) => AuthListener()),
+                          MaterialPageRoute(builder: (_) => AuthListener()),
                               (r) => false);
                     },
                   ),

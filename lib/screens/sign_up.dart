@@ -13,6 +13,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  bool _loading = false;
+
   String _displayName = '';
   String _email = '';
   String _password = '';
@@ -121,7 +123,9 @@ class _SignUpState extends State<SignUp> {
                   onPressed: () async {
                     _validateAllFields();
                     if (_formKey.currentState.validate()) {
+                      setState(() => _loading = true);
                       User user = await _tryToRegister();
+                      setState(() => _loading = false);
                       if (_formKey.currentState.validate() && user != null) {
 //                        log('current ${Provider
 //                            .of<User>(context, listen: false)
@@ -172,6 +176,7 @@ class _SignUpState extends State<SignUp> {
         return null;
       }
       setState(() {
+        _loading = false;
         switch (e.code) {
           case "ERROR_INVALID_EMAIL":
             {

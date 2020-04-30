@@ -1,4 +1,5 @@
 import 'package:flex/models/user.dart';
+import 'package:flex/screens/loading.dart';
 import 'package:flex/screens/sign_up.dart';
 import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool _loading = false;
+
   String _email = '';
   String _password = '';
   String _error = '';
@@ -25,7 +28,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return _loading
+        ? Loading()
+        : Scaffold(
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -85,15 +90,16 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 Text("Don't have an account?"),
                 FlatButton(
-                  textColor: Theme
+                  textColor:
+                  Theme
                       .of(context)
                       .buttonTheme
                       .colorScheme
                       .primary,
                   child: Text('Sign up'),
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => SignUp()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => SignUp()));
                   },
                 ),
               ],
@@ -118,6 +124,7 @@ class _LoginState extends State<Login> {
             setState(() {
               _email = _emailController.text;
               _password = _passwordController.text;
+              _loading = true;
             });
 
             try {
@@ -125,12 +132,16 @@ class _LoginState extends State<Login> {
 
               if (user != null) {
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => Home()), (r) => false);
+                    MaterialPageRoute(builder: (_) => Home()),
+                        (r) => false);
               }
             } catch (e) {
               setState(() {
+                _loading = false;
+
                 if (!(e is PlatformException)) {
-                  _error = 'Unexpected error has occurred. Try again later.';
+                  _error =
+                  'Unexpected error has occurred. Try again later.';
                   return;
                 }
 
@@ -157,7 +168,8 @@ class _LoginState extends State<Login> {
           width: 25.0,
           height: 25.0,
         ),
-        backgroundColor: Theme
+        backgroundColor:
+        Theme
             .of(context)
             .buttonTheme
             .colorScheme

@@ -6,12 +6,23 @@ import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-class ContinueWith extends StatelessWidget {
+import 'loading.dart';
+
+class ContinueWith extends StatefulWidget {
+  @override
+  _ContinueWithState createState() => _ContinueWithState();
+}
+
+class _ContinueWithState extends State<ContinueWith> {
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
     Auth auth = Auth();
 
-    return Scaffold(
+    return _loading
+        ? Loading()
+        : Scaffold(
       body: SafeArea(
         child: ListView(
           children: <Widget>[
@@ -66,7 +77,9 @@ class ContinueWith extends StatelessWidget {
                   backgroundColor: Colors.white,
                   splashColor: Colors.grey,
                   onPressed: () async {
+                    setState(() => _loading = true);
                     User res = await auth.signInAnon();
+
                     if (res != null) {
                       log(res.userInfo.toString());
                     } else {
