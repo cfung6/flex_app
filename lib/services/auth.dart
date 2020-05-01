@@ -76,8 +76,13 @@ class Auth {
   }
 
   Future<User> currentUser() async {
-    FirebaseUser user = await _auth.currentUser();
-    return User(userInfo: user);
+    try {
+      FirebaseUser user = await _auth.currentUser();
+      return User(userInfo: user);
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
   }
 
   Stream<User> get user {

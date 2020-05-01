@@ -2,9 +2,14 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flex/models/sneaker.dart';
+import 'package:flex/models/user.dart';
+import 'package:flex/services/auth.dart';
+import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/search_bar.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
+
+import 'loading.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -15,6 +20,8 @@ class SearchState extends State<Search> {
   String _query = "";
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+
+  final Auth _auth = Auth();
 
   @override
   void initState() {
@@ -44,9 +51,7 @@ class SearchState extends State<Search> {
             } else {
               return Expanded(
                 child: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                  ),
+                  child: Loading(),
                 ),
               );
             }
@@ -86,7 +91,12 @@ class SearchState extends State<Search> {
         if (releasedOnly && s.bigImage == "") {
           continue;
         } else {
-          sneakerList.add(SneakerTile(sneaker: s));
+          sneakerList.add(
+            SneakerTile(
+              sneaker: s,
+              onTap: _addSneakerToCurrentUserCollection,
+            ),
+          );
           j++;
         }
       }
@@ -107,5 +117,16 @@ class SearchState extends State<Search> {
         itemCount: sneakerList.length,
       ),
     );
+  }
+
+  Future<void> _addSneakerToCurrentUserCollection(Sneaker s) async {
+    User user = await _auth.currentUser();
+    if (!user.userInfo.isAnonymous) {
+      DatabaseHelper db =
+      DatabaseHelper(displayName: user.userInfo.displayName);
+      await db.addSneakerToCollection(s);
+    } else {
+      //TODO: ask to register
+    }
   }
 }

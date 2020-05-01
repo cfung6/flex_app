@@ -35,7 +35,7 @@ class MyDrawer extends StatelessWidget {
       future: _auth.currentUser(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
+          if (snapshot.hasError || snapshot.data == null) {
             return _buildDrawer(context, 'Not signed in', notifier);
           } else {
             return _buildDrawer(

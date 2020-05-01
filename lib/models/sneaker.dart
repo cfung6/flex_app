@@ -25,4 +25,15 @@ class Sneaker {
       smallImage: json['results'][i]['media']['thumbUrl'],
     );
   }
+
+  factory Sneaker.fromMap(String name, Map<String, dynamic> data) {
+    return Sneaker(
+      name: name,
+      price: data['price'],
+      releaseDate: data['releaseDate'],
+      bigImage: data['bigImage'],
+      medImage: data['medImage'],
+      smallImage: data['smallImage'],
+    );
+  }
 }
