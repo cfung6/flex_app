@@ -9,11 +9,38 @@ class DatabaseHelper {
   DatabaseHelper({this.displayName});
 
   Stream<List<Sneaker>> getSneakerCollection() {
-    return userCollection.document(displayName).snapshots().map((doc) {
-      return doc.data['sneakers'].forEach((key, value) {
-        return Sneaker.fromMap(key, value);
-      });
+    return userCollection
+        .document(displayName)
+        .snapshots()
+        .map(snapshotToSneakerList);
+  }
+
+  //DocumentSnapshot returns in the form of:
+  //{
+  //  sneakers: {...},
+  //  otherProperty: {...},
+  //}
+  List<Sneaker> snapshotToSneakerList(DocumentSnapshot doc) {
+    //sneakerData is in the form of:
+    //{
+    //  "jordan 1": {...},
+    //  "jordan 4": {...},
+    //}
+    Map<String, dynamic> sneakerData =
+    Map<String, dynamic>.from(doc.data['sneakers']);
+    List<Sneaker> sneakerList = [];
+
+    //for every shoe in the sneakerData map, we turn the key/value pair
+    //into a sneaker object (key representing the name of the shoe and
+    //value representing another map containing other sneaker
+    //information other than the name such as price, releaseData, etc)
+    sneakerData.forEach((key, value) {
+      sneakerList.add(
+        Sneaker.fromMap(key, Map<String, dynamic>.from(value)),
+      );
     });
+
+    return sneakerList;
   }
 
   Future<void> addSneakerToCollection(Sneaker sneaker) async {

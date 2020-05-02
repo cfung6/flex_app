@@ -1,4 +1,4 @@
-import 'package:flex/screens/collection.dart';
+import 'package:flex/screens/my_collection.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/search.dart';
@@ -11,7 +11,7 @@ class DrawerStateNotifier with ChangeNotifier {
       case 'Search':
         return Search();
       case 'Collection':
-        return Collection();
+        return MyCollection();
       default:
         return null;
     }

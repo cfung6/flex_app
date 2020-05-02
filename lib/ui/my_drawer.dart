@@ -33,7 +33,7 @@ class MyDrawer extends StatelessWidget {
 
   //if user data hasn't updated locally, ask Firebase Auth for the current user data
   Widget _buildFutureDrawer(DrawerStateNotifier drawerNotifier) {
-    return FutureBuilder(
+    return FutureBuilder<String>(
       future: _auth.getDisplayName(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {

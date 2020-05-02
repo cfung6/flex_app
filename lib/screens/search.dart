@@ -38,7 +38,7 @@ class SearchState extends State<Search> {
           focusNode: _focusNode,
           searchPage: this,
         ),
-        FutureBuilder(
+        FutureBuilder<List<SneakerTile>>(
           future: _constructList(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -50,9 +50,7 @@ class SearchState extends State<Search> {
               return _buildSearchResults(snapshot.data);
             } else {
               return Expanded(
-                child: Center(
-                  child: Loading(),
-                ),
+                child: Loading(),
               );
             }
           },

@@ -46,6 +46,7 @@ class SearchBarState extends State<SearchBar> {
                 child: TextField(
                   focusNode: widget.focusNode,
                   controller: widget.controller,
+                  autocorrect: false,
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
