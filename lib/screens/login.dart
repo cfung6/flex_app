@@ -58,6 +58,7 @@ class _LoginState extends State<Login> {
                 children: <Widget>[
                   TextFormField(
                     controller: _emailController,
+                    autocorrect: false,
                     decoration: InputDecoration(
                       filled: true,
                       labelText: 'Email',
@@ -72,6 +73,7 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 15.0),
                   TextFormField(
                       controller: _passwordController,
+                      autocorrect: false,
                       decoration: InputDecoration(
                         filled: true,
                         labelText: 'Password',

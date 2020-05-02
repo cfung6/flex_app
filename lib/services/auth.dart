@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flex/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -58,6 +59,9 @@ class Auth {
   }
 
   Future<User> updateDisplayName(String displayName) async {
+    //TODO: Update document id if changing display name
+    final prefs = await SharedPreferences.getInstance();
+
     try {
       UserUpdateInfo userUpdateInfo = UserUpdateInfo();
       userUpdateInfo.displayName = displayName;
@@ -68,6 +72,7 @@ class Auth {
       user = await _auth.currentUser();
 
 //      _userReloadStreamController.add(user);
+      await prefs.setString('displayName', displayName);
       return User(userInfo: user);
     } catch (e) {
       log(e.toString());
@@ -88,6 +93,11 @@ class Auth {
   Stream<User> get user {
 //    return _onAuthStateChangedOrUserReload.map(_createUser);
     return _auth.onAuthStateChanged.map(_createUser);
+  }
+
+  Future<String> getDisplayName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('displayName');
   }
 
 //  Stream<FirebaseUser> _mergeStreamWithUserReload(Stream<FirebaseUser> stream) {

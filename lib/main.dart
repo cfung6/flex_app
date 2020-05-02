@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//    PaintingBinding.instance.imageCache.clear();
     return MultiProvider(
       child: MaterialApp(
         title: 'Flex App',

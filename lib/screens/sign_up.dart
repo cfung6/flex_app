@@ -52,6 +52,7 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(height: 50.0),
               TextFormField(
                 controller: _displayNameController,
+                autocorrect: false,
                 decoration: InputDecoration(
                   labelText: 'Display name (what other users see)',
                   filled: true,
@@ -66,6 +67,7 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(height: 20.0),
               TextFormField(
                 controller: _emailController,
+                autocorrect: false,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   filled: true,
@@ -80,6 +82,7 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(height: 20.0),
               TextFormField(
                 controller: _passwordController,
+                autocorrect: false,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   filled: true,
@@ -95,6 +98,7 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(height: 20.0),
               TextFormField(
                 controller: _confirmPasswordController,
+                autocorrect: false,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
                   filled: true,

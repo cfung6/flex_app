@@ -1,6 +1,7 @@
 import 'package:flex/auth_listener.dart';
 import 'package:flex/models/user.dart';
 import 'package:flex/provider_notifiers/drawer_notifier.dart';
+import 'package:flex/screens/loading.dart';
 import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,8 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = Provider.of<DrawerStateNotifier>(context);
+    final drawerNotifier =
+    Provider.of<DrawerStateNotifier>(context, listen: false);
     final user = Provider.of<User>(context);
     String userName;
 
@@ -24,31 +26,29 @@ class MyDrawer extends StatelessWidget {
 
     return SafeArea(
       child: userName == null
-          ? _buildFutureDrawer(notifier)
-          : _buildDrawer(context, userName, notifier),
+          ? _buildFutureDrawer(drawerNotifier)
+          : _buildDrawer(context, userName, drawerNotifier),
     );
   }
 
   //if user data hasn't updated locally, ask Firebase Auth for the current user data
-  Widget _buildFutureDrawer(DrawerStateNotifier notifier) {
+  Widget _buildFutureDrawer(DrawerStateNotifier drawerNotifier) {
     return FutureBuilder(
-      future: _auth.currentUser(),
+      future: _auth.getDisplayName(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError || snapshot.data == null) {
-            return _buildDrawer(context, 'Not signed in', notifier);
+            return _buildDrawer(context, 'Not signed in', drawerNotifier);
           } else {
             return _buildDrawer(
-                context, snapshot.data.userInfo.displayName, notifier);
+                context, snapshot.data, drawerNotifier);
           }
         } else {
           return Column(
             children: <Widget>[
               Expanded(
                 child: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                  ),
+                  child: Loading(),
                 ),
               ),
             ],
@@ -59,7 +59,7 @@ class MyDrawer extends StatelessWidget {
   }
 
   Widget _buildDrawer(BuildContext context, String userName,
-      DrawerStateNotifier notifier) {
+      DrawerStateNotifier drawerNotifier) {
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -109,17 +109,6 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
           ),
-//            ListTile(
-//              title: Text('Sign in / Register'),
-//              leading: Image.asset(
-//                'assets/images/login.png',
-//                width: 20.0,
-//              ),
-//              onTap: () {
-//                Navigator.of(context).pop();
-//                notifier.updateScreen('Sign in / Register');
-//              },
-//            ),
           ListTile(
             title: Text('Search'),
             leading: Icon(
@@ -127,7 +116,18 @@ class MyDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pop();
-              notifier.updateScreen('Search');
+              drawerNotifier.updateScreen('Search');
+            },
+          ),
+          ListTile(
+            title: Text('My collection'),
+            leading: Image.asset(
+              'assets/images/yeezy.png',
+              width: 35.0,
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              drawerNotifier.updateScreen('Collection');
             },
           ),
         ],
