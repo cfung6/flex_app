@@ -146,6 +146,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  //local validation
   void _validateAllFields() {
     //TODO: Validate uniqueness of display name
     setState(() {
@@ -165,6 +166,7 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
+  //validation from firebase
   Future<User> _tryToRegister() async {
     try {
       User user = await _auth.register(_email, _password, _displayName);

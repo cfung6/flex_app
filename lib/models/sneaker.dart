@@ -26,14 +26,14 @@ class Sneaker {
     );
   }
 
-  factory Sneaker.fromMap(String name, Map<String, dynamic> data) {
+  factory Sneaker.fromMap(String name, Map data) {
     return Sneaker(
-      name: name,
-      price: data['price'],
-      releaseDate: data['releaseDate'],
-      bigImage: data['bigImage'],
-      medImage: data['medImage'],
-      smallImage: data['smallImage'],
+      name: name ?? 'null',
+      price: data['price'] ?? 0,
+      releaseDate: data['releaseDate'] ?? 'null',
+      bigImage: data['bigImage'] ?? 'null',
+      medImage: data['medImage' ?? 'null'],
+      smallImage: data['smallImage'] ?? 'null',
     );
   }
 }
