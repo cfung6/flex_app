@@ -26,6 +26,7 @@ class Auth {
   Future<User> signInAnon() async {
     try {
       AuthResult res = await _auth.signInAnonymously();
+      //TODO: Update displayName if anon
       return User(userInfo: res.user);
     } catch (e) {
       log(e.toString());
@@ -45,6 +46,7 @@ class Auth {
   Future<User> signInWithEmail(String email, String password) async {
     AuthResult res = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
+    await updateDisplayNameLocal(res.user.displayName);
     return _createUser(res.user);
   }
 
@@ -60,8 +62,6 @@ class Auth {
 
   Future<User> updateDisplayName(String displayName) async {
     //TODO: Update document id if changing display name
-    final prefs = await SharedPreferences.getInstance();
-
     try {
       UserUpdateInfo userUpdateInfo = UserUpdateInfo();
       userUpdateInfo.displayName = displayName;
@@ -72,7 +72,7 @@ class Auth {
       user = await _auth.currentUser();
 
 //      _userReloadStreamController.add(user);
-      await prefs.setString('displayName', displayName);
+      await updateDisplayNameLocal(displayName);
       return User(userInfo: user);
     } catch (e) {
       log(e.toString());
@@ -93,6 +93,11 @@ class Auth {
   Stream<User> get user {
 //    return _onAuthStateChangedOrUserReload.map(_createUser);
     return _auth.onAuthStateChanged.map(_createUser);
+  }
+
+  Future<void> updateDisplayNameLocal(String displayName) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('displayName', displayName);
   }
 
   Future<String> getDisplayName() async {
