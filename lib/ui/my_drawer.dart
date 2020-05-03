@@ -85,7 +85,7 @@ class MyDrawer extends StatelessWidget {
                         .headline6
                         .copyWith(color: Colors.white),
                   ),
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   FlatButton(
                     child: Text(
                       'Sign out',
@@ -110,8 +110,8 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('Search'),
-            leading: Icon(
+            title: const Text('Search'),
+            leading: const Icon(
               Icons.search,
             ),
             onTap: () {
@@ -120,7 +120,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('My collection'),
+            title: const Text('My collection'),
             leading: Image.asset(
               'assets/images/yeezy.png',
               width: 35.0,

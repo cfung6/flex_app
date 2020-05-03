@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex/models/sneaker.dart';
 import 'package:flutter/material.dart';
 
 class SneakerTile extends StatelessWidget {
   final Sneaker sneaker;
-  final Future<void> Function(Sneaker s) onTap;
+  final void Function(Sneaker s) onTap;
 
   const SneakerTile({@required this.sneaker, @required this.onTap});
 
@@ -20,16 +21,23 @@ class SneakerTile extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      FadeInImage.assetNetwork(
-                        height: 150,
+//                      FadeInImage.assetNetwork(
+//                        height: 150,
+//                        width: 150,
+//                        image: sneaker.smallImage,
+//                        placeholder: 'assets/images/no_image.png',
+//                      ),
+                      CachedNetworkImage(
                         width: 150,
-                        image: sneaker.smallImage,
-                        placeholder: 'assets/images/no_image.png',
+                        imageUrl: sneaker.smallImage,
+                        placeholder: (_, __) => CircularProgressIndicator(),
+                        errorWidget: (_, __, ___) =>
+                            Image.asset('assets/images/no_image.png'),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 5.0),
+                const SizedBox(height: 5.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -48,8 +56,8 @@ class SneakerTile extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () async {
-                  await onTap(sneaker);
+                onTap: () {
+                  onTap(sneaker);
                 },
               ),
             ),

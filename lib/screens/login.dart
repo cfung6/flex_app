@@ -90,7 +90,7 @@ class _LoginState extends State<Login> {
             ),
             ButtonBar(
               children: <Widget>[
-                Text("Don't have an account?"),
+                const Text("Don't have an account?"),
                 FlatButton(
                   textColor:
                   Theme
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                       .buttonTheme
                       .colorScheme
                       .primary,
-                  child: Text('Sign up'),
+                  child: const Text('Sign up'),
                   onPressed: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => SignUp()));
@@ -106,9 +106,7 @@ class _LoginState extends State<Login> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 12.0,
-            ),
+            const SizedBox(height: 12.0),
             Center(
               child: Text(
                 _error,

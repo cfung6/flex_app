@@ -17,9 +17,13 @@ class Sneaker {
 
   factory Sneaker.fromJSON(Map<String, dynamic> json, int i) {
     return Sneaker(
-      name: json['results'][i]['title'],
-      price: json['results'][i]['retailPrice'],
-      releaseDate: json['results'][i]['releaseDate'],
+      name: json['results'][i]['title'].isEmpty
+          ? 'Unknown'
+          : json['results'][i]['title'],
+      price: json['results'][i]['retailPrice'] ?? 0,
+      releaseDate: json['results'][i]['releaseDate'].isEmpty
+          ? 'Unknown'
+          : json['results'][i]['releaseDate'],
       bigImage: json['results'][i]['media']['imageUrl'],
       medImage: json['results'][i]['media']['smallImageUrl'],
       smallImage: json['results'][i]['media']['thumbUrl'],
@@ -28,12 +32,12 @@ class Sneaker {
 
   factory Sneaker.fromMap(String name, Map data) {
     return Sneaker(
-      name: name ?? 'null',
+      name: name ?? 'Unknown',
       price: data['price'] ?? 0,
-      releaseDate: data['releaseDate'] ?? 'null',
-      bigImage: data['bigImage'] ?? 'null',
-      medImage: data['medImage' ?? 'null'],
-      smallImage: data['smallImage'] ?? 'null',
+      releaseDate: data['releaseDate'] ?? 'Unknown',
+      bigImage: data['bigImage'] ?? '',
+      medImage: data['medImage'] ?? '',
+      smallImage: data['smallImage'] ?? '',
     );
   }
 }

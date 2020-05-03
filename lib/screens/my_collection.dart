@@ -1,9 +1,9 @@
-import 'dart:developer';
-
 import 'package:flex/models/sneaker.dart';
 import 'package:flex/screens/loading.dart';
+import 'package:flex/screens/sneaker_screen.dart';
 import 'package:flex/services/auth.dart';
 import 'package:flex/services/database_helper.dart';
+import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
 
 class MyCollection extends StatefulWidget {
@@ -44,9 +44,6 @@ class _MyCollectionState extends State<MyCollection> {
       stream: DatabaseHelper(displayName: displayName).getSneakerCollection(),
       initialData: List<Sneaker>(),
       builder: (_, snapshot) {
-        for (Sneaker s in snapshot.data) {
-          log(s.name);
-        }
         if (snapshot.hasError) {
           //TODO: return error ui
           return Container();
@@ -58,13 +55,47 @@ class _MyCollectionState extends State<MyCollection> {
   }
 
   Widget _buildCollectionList(List<Sneaker> sneakers) {
-    return ListView.builder(
-      itemBuilder: (_, i) {
-        return ListTile(
-          title: Text(sneakers[i].name),
-        );
-      },
-      itemCount: sneakers.length,
+    List<SneakerTile> sneakerTiles = _sneakerListToSneakerTileList(sneakers);
+
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: GridView.builder(
+            gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (BuildContext context, int i) {
+              return sneakerTiles[i];
+            },
+            itemCount: sneakerTiles.length,
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<SneakerTile> _sneakerListToSneakerTileList(List<Sneaker> sneakers) {
+    List<SneakerTile> sneakerTiles = [];
+
+    for (int i = 0; i < sneakers.length; i++) {
+      sneakerTiles.add(
+        SneakerTile(
+          sneaker: sneakers[i],
+          onTap: _goToSneakerScreen,
+        ),
+      );
+    }
+
+    return sneakerTiles;
+  }
+
+  void _goToSneakerScreen(Sneaker s) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            SneakerScreen(
+              sneaker: s,
+            ),
+      ),
     );
   }
 }

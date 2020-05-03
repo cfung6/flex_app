@@ -2,9 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flex/models/sneaker.dart';
-import 'package:flex/models/user.dart';
+import 'package:flex/screens/sneaker_screen.dart';
 import 'package:flex/services/auth.dart';
-import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/search_bar.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +91,7 @@ class SearchState extends State<Search> {
           sneakerList.add(
             SneakerTile(
               sneaker: s,
-              onTap: _addSneakerToCurrentUserCollection,
+              onTap: _goToSneakerScreen,
             ),
           );
           j++;
@@ -117,14 +116,25 @@ class SearchState extends State<Search> {
     );
   }
 
-  Future<void> _addSneakerToCurrentUserCollection(Sneaker s) async {
-    User user = await _auth.currentUser();
-    if (!user.userInfo.isAnonymous) {
-      DatabaseHelper db =
-      DatabaseHelper(displayName: user.userInfo.displayName);
-      await db.addSneakerToCollection(s);
-    } else {
-      //TODO: ask to register
-    }
+//  Future<void> _addSneakerToCurrentUserCollection(Sneaker s) async {
+//    User user = await _auth.currentUser();
+//    if (!user.userInfo.isAnonymous) {
+//      DatabaseHelper db =
+//      DatabaseHelper(displayName: user.userInfo.displayName);
+//      await db.addSneakerToCollection(s);
+//    } else {
+//      //TODO: ask to register
+//    }
+//  }
+
+  void _goToSneakerScreen(Sneaker s) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            SneakerScreen(
+              sneaker: s,
+            ),
+      ),
+    );
   }
 }
