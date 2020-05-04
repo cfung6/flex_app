@@ -11,10 +11,13 @@ class MyCollection extends StatefulWidget {
 
 class _MyCollectionState extends State<MyCollection> {
   List<Sneaker> sneakers;
+  String displayName;
 
   @override
   Widget build(BuildContext context) {
     sneakers = Provider.of<List<Sneaker>>(context);
+    displayName = Provider.of<String>(context);
+
     return _buildCollectionList();
   }
 
@@ -59,6 +62,7 @@ class _MyCollectionState extends State<MyCollection> {
             SneakerScreen(
               sneaker: s,
               sneakerInList: sneakers.contains(s),
+              displayName: displayName,
             ),
       ),
     );

@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flex/models/sneaker.dart';
 
 class DatabaseHelper {
   final CollectionReference userCollection =
-      Firestore.instance.collection('users');
+  Firestore.instance.collection('users');
   final String displayName;
 
   DatabaseHelper({this.displayName});
@@ -43,20 +45,27 @@ class DatabaseHelper {
     return sneakerList;
   }
 
-  Future<void> addSneakerToCollection(Sneaker sneaker) async {
-    return await userCollection.document(displayName).setData(
-      {
-        'sneakers': {
-          sneaker.name: {
-            'price': sneaker.price,
-            'releaseDate': sneaker.releaseDate,
-            'bigImage': sneaker.bigImage,
-            'medImage': sneaker.medImage,
-            'smallImage': sneaker.smallImage,
+  //returns true if sneaker was added to collection successfully
+  Future<bool> addSneakerToCollection(Sneaker sneaker) async {
+    try {
+      await userCollection.document(displayName).setData(
+        {
+          'sneakers': {
+            sneaker.name: {
+              'price': sneaker.price,
+              'releaseDate': sneaker.releaseDate,
+              'bigImage': sneaker.bigImage,
+              'medImage': sneaker.medImage,
+              'smallImage': sneaker.smallImage,
+            }
           }
-        }
-      },
-      merge: true,
-    );
+        },
+        merge: true,
+      );
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
   }
 }

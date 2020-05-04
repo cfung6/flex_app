@@ -1,16 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex/models/sneaker.dart';
+import 'package:flex/services/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SneakerScreen extends StatefulWidget {
   final Sneaker sneaker;
   final bool sneakerInList;
+  final String displayName;
 
-  SneakerScreen({
-    @required this.sneaker,
+  SneakerScreen({@required this.sneaker,
     @required this.sneakerInList,
-  });
+    @required this.displayName});
 
   @override
   _SneakerScreenState createState() => _SneakerScreenState();
@@ -19,6 +20,9 @@ class SneakerScreen extends StatefulWidget {
 class _SneakerScreenState extends State<SneakerScreen> {
   String releaseDate = 'Unknown';
   String price;
+
+  //true if the sneaker is in the current user's sneaker collection
+  bool sneakerInList;
 
   @override
   void initState() {
@@ -31,6 +35,8 @@ class _SneakerScreenState extends State<SneakerScreen> {
     } else {
       price = widget.sneaker.price.toString();
     }
+
+    sneakerInList = widget.sneakerInList;
   }
 
   @override
@@ -82,7 +88,7 @@ class _SneakerScreenState extends State<SneakerScreen> {
             ),
           ),
           const SizedBox(height: 20.0),
-          widget.sneakerInList
+          sneakerInList
               ? _addedToCollectionButton()
               : _addToCollectionButton(),
           const SizedBox(height: 10.0),
@@ -105,7 +111,15 @@ class _SneakerScreenState extends State<SneakerScreen> {
   Widget _addToCollectionButton() {
     return Align(
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () async {
+          bool success = await DatabaseHelper(displayName: widget.displayName)
+              .addSneakerToCollection(widget.sneaker);
+          setState(() {
+            if (success) {
+              sneakerInList = true;
+            }
+          });
+        },
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

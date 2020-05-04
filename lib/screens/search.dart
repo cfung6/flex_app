@@ -22,6 +22,7 @@ class SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<Sneaker> _sneakers;
+  String _displayName;
 
   final Auth _auth = Auth();
 
@@ -34,6 +35,7 @@ class SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     _sneakers = Provider.of<List<Sneaker>>(context);
+    _displayName = Provider.of<String>(context);
 
     return Column(
       children: <Widget>[
@@ -139,6 +141,7 @@ class SearchState extends State<Search> {
             SneakerScreen(
               sneaker: s,
               sneakerInList: _sneakers.contains(s),
+              displayName: _displayName,
             ),
       ),
     );
