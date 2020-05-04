@@ -1,10 +1,8 @@
 import 'package:flex/models/sneaker.dart';
-import 'package:flex/screens/loading.dart';
 import 'package:flex/screens/sneaker_screen.dart';
-import 'package:flex/services/auth.dart';
-import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyCollection extends StatefulWidget {
   @override
@@ -12,46 +10,10 @@ class MyCollection extends StatefulWidget {
 }
 
 class _MyCollectionState extends State<MyCollection> {
-  final Auth auth = Auth();
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: auth.getDisplayName(),
-      builder: (_, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            //TODO: return error ui
-            return Container();
-          } else {
-            return _buildStreamBuilder(snapshot.data);
-          }
-        } else {
-          return Column(
-            children: <Widget>[
-              Expanded(
-                child: Loading(),
-              ),
-            ],
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildStreamBuilder(String displayName) {
-    return StreamBuilder<List<Sneaker>>(
-      stream: DatabaseHelper(displayName: displayName).getSneakerCollection(),
-      initialData: List<Sneaker>(),
-      builder: (_, snapshot) {
-        if (snapshot.hasError) {
-          //TODO: return error ui
-          return Container();
-        } else {
-          return _buildCollectionList(snapshot.data);
-        }
-      },
-    );
+    final sneakers = Provider.of<List<Sneaker>>(context);
+    return _buildCollectionList(sneakers);
   }
 
   Widget _buildCollectionList(List<Sneaker> sneakers) {

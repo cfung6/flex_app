@@ -90,6 +90,7 @@ class Auth {
     }
   }
 
+
   Stream<User> get user {
 //    return _onAuthStateChangedOrUserReload.map(_createUser);
     return _auth.onAuthStateChanged.map(_createUser);
@@ -103,6 +104,11 @@ class Auth {
   Future<String> getDisplayName() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('displayName');
+  }
+
+  Future<String> getDisplayNameFromFirebase() async {
+    FirebaseUser user = await _auth.currentUser();
+    return user.displayName;
   }
 
 //  Stream<FirebaseUser> _mergeStreamWithUserReload(Stream<FirebaseUser> stream) {
