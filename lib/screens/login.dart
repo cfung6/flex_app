@@ -2,10 +2,9 @@ import 'package:flex/models/user.dart';
 import 'package:flex/screens/loading.dart';
 import 'package:flex/screens/sign_up.dart';
 import 'package:flex/services/auth.dart';
+import 'package:flex/wrappers/display_name_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'home.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -132,7 +131,8 @@ class _LoginState extends State<Login> {
 
               if (user != null) {
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => Home()),
+                    MaterialPageRoute(
+                        builder: (_) => DisplayNameWrapper()),
                         (r) => false);
               }
             } catch (e) {

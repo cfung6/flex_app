@@ -10,13 +10,15 @@ class MyCollection extends StatefulWidget {
 }
 
 class _MyCollectionState extends State<MyCollection> {
+  List<Sneaker> sneakers;
+
   @override
   Widget build(BuildContext context) {
-    final sneakers = Provider.of<List<Sneaker>>(context);
-    return _buildCollectionList(sneakers);
+    sneakers = Provider.of<List<Sneaker>>(context);
+    return _buildCollectionList();
   }
 
-  Widget _buildCollectionList(List<Sneaker> sneakers) {
+  Widget _buildCollectionList() {
     List<SneakerTile> sneakerTiles = _sneakerListToSneakerTileList(sneakers);
 
     return Column(
@@ -56,6 +58,7 @@ class _MyCollectionState extends State<MyCollection> {
         builder: (_) =>
             SneakerScreen(
               sneaker: s,
+              sneakerInList: sneakers.contains(s),
             ),
       ),
     );

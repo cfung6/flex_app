@@ -7,18 +7,21 @@ import 'package:flex/services/auth.dart';
 import 'package:flex/ui/search_bar.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'loading.dart';
 
 class Search extends StatefulWidget {
   @override
-  State<Search> createState() => SearchState();
+  SearchState createState() => SearchState();
 }
 
+//public for search bar to access
 class SearchState extends State<Search> {
   String _query = "";
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  List<Sneaker> _sneakers;
 
   final Auth _auth = Auth();
 
@@ -30,6 +33,8 @@ class SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    _sneakers = Provider.of<List<Sneaker>>(context);
+
     return Column(
       children: <Widget>[
         SearchBar(
@@ -133,6 +138,7 @@ class SearchState extends State<Search> {
         builder: (_) =>
             SneakerScreen(
               sneaker: s,
+              sneakerInList: _sneakers.contains(s),
             ),
       ),
     );

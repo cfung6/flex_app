@@ -1,6 +1,7 @@
-import 'package:flex/auth_listener.dart';
+
 import 'package:flex/provider_notifiers/drawer_notifier.dart';
 import 'package:flex/services/auth.dart';
+import 'package:flex/wrappers/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flex App',
         theme: _theme,
-        home: AuthListener(),
+        home: AuthWrapper(),
       ),
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<DrawerStateNotifier>(

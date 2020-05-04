@@ -2,10 +2,9 @@ import 'dart:developer';
 
 import 'package:flex/models/user.dart';
 import 'package:flex/services/auth.dart';
+import 'package:flex/wrappers/display_name_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'home.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -136,7 +135,8 @@ class _SignUpState extends State<SignUp> {
 //                            .userInfo
 //                            .displayName}');
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (_) => Home()),
+                            MaterialPageRoute(
+                                builder: (_) => DisplayNameWrapper()),
                                 (r) => false);
                       }
                     }

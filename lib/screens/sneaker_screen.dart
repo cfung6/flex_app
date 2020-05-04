@@ -5,8 +5,12 @@ import 'package:intl/intl.dart';
 
 class SneakerScreen extends StatefulWidget {
   final Sneaker sneaker;
+  final bool sneakerInList;
 
-  SneakerScreen({this.sneaker});
+  SneakerScreen({
+    @required this.sneaker,
+    @required this.sneakerInList,
+  });
 
   @override
   _SneakerScreenState createState() => _SneakerScreenState();
@@ -78,18 +82,61 @@ class _SneakerScreenState extends State<SneakerScreen> {
             ),
           ),
           const SizedBox(height: 20.0),
+          widget.sneakerInList
+              ? _addedToCollectionButton()
+              : _addToCollectionButton(),
+          const SizedBox(height: 10.0),
           Divider(
             thickness: 3.0,
             indent: 90.0,
             endIndent: 90.0,
           ),
-          const SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
           Text(
             'Friends that own this shoe:',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6,
           )
         ],
+      ),
+    );
+  }
+
+  Widget _addToCollectionButton() {
+    return Align(
+      child: RaisedButton(
+        onPressed: () {},
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(Icons.add),
+            Text('Add to collection'),
+          ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      ),
+    );
+  }
+
+  Widget _addedToCollectionButton() {
+    return Align(
+      child: FlatButton(
+        onPressed: () => null,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(Icons.check),
+            Text('Added to collection'),
+          ],
+        ),
+        textColor: Colors.green,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       ),
     );
   }
