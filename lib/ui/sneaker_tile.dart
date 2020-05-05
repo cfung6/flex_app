@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex/models/sneaker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SneakerTile extends StatelessWidget {
   final Sneaker sneaker;
@@ -10,6 +11,9 @@ class SneakerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Sneaker> sneakerList = Provider.of<List<Sneaker>>(context);
+    final bool contains = sneakerList.contains(sneaker);
+
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: Stack(
@@ -59,6 +63,28 @@ class SneakerTile extends StatelessWidget {
                 onTap: () {
                   onTap(sneaker);
                 },
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Material(
+                child: PopupMenuButton(
+                  onSelected: (value) {},
+                  itemBuilder: (context) =>
+                  <PopupMenuEntry<String>>[
+                    contains
+                        ? const PopupMenuItem<String>(
+                      value: 'Remove',
+                      child: Text('Remove from collection'),
+                    )
+                        : const PopupMenuItem<String>(
+                      value: 'Add',
+                      child: Text('Add to collection'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -6,19 +6,21 @@ import 'package:flex/models/sneaker.dart';
 class DatabaseHelper {
   final CollectionReference _userCollection =
   Firestore.instance.collection('users');
+  String _upperCaseName;
   String _displayName;
 
   //All display names are converted to upper case as document ids to ensure
   //uniqueness of display names ignoring capitalization
   DatabaseHelper(String displayName) {
     if (displayName != null) {
-      _displayName = displayName.toUpperCase();
+      _displayName = displayName;
+      _upperCaseName = displayName.toUpperCase();
     }
   }
 
   Stream<List<Sneaker>> getSneakerCollection() {
     return _userCollection
-        .document(_displayName)
+        .document(_upperCaseName)
         .snapshots()
         .map(snapshotToSneakerList);
   }
@@ -54,8 +56,9 @@ class DatabaseHelper {
   //returns true if sneaker was added to collection successfully
   Future<bool> addSneakerToCollection(Sneaker sneaker) async {
     try {
-      await _userCollection.document(_displayName).setData(
+      await _userCollection.document(_upperCaseName).setData(
         {
+          'display_name': _displayName,
           'sneakers': {
             sneaker.name: {
               'price': sneaker.price,
@@ -76,7 +79,7 @@ class DatabaseHelper {
   }
 
   Future<bool> userExists() async {
-    final snapshot = await _userCollection.document(_displayName).get();
+    final snapshot = await _userCollection.document(_upperCaseName).get();
     if (snapshot == null || !snapshot.exists) {
       return false;
     }
