@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex/models/sneaker.dart';
 import 'package:flex/services/database_helper.dart';
@@ -73,12 +75,19 @@ class SneakerTile extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Material(
                 child: PopupMenuButton(
-                  onSelected: (value) {
+                  onSelected: (value) async {
                     if (value == 'Remove') {
-
+                      if (!(await DatabaseHelper(displayName)
+                          .removeSneakerFromCollection(sneaker))) {
+                        //TODO: Return Error
+                        log('error removing');
+                      }
                     } else if (value == 'Add') {
-                      DatabaseHelper(displayName).addSneakerToCollection(
-                          sneaker);
+                      if (!(await DatabaseHelper(displayName)
+                          .addSneakerToCollection(sneaker))) {
+                        //TODO: Return Error
+                        log('error adding');
+                      }
                     }
                   },
                   itemBuilder: (context) =>

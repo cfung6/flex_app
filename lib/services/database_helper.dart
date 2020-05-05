@@ -78,6 +78,18 @@ class DatabaseHelper {
     }
   }
 
+  Future<bool> removeSneakerFromCollection(Sneaker sneaker) async {
+    try {
+      await _userCollection.document(_upperCaseName).updateData({
+        'sneakers.${sneaker.name}': FieldValue.delete(),
+      });
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
   Future<bool> userExists() async {
     final snapshot = await _userCollection.document(_upperCaseName).get();
     if (snapshot == null || !snapshot.exists) {
