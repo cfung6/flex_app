@@ -26,10 +26,13 @@ class SearchState extends State<Search> {
 
   final Auth _auth = Auth();
 
+  Future<List<SneakerTile>> _sneakerTiles;
+
   @override
   void initState() {
-    super.initState();
     _controller.addListener(updateQuery);
+    _sneakerTiles = _constructList();
+    super.initState();
   }
 
   @override
@@ -45,7 +48,7 @@ class SearchState extends State<Search> {
           searchPage: this,
         ),
         FutureBuilder<List<SneakerTile>>(
-          future: _constructList(),
+          future: _sneakerTiles,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -67,7 +70,10 @@ class SearchState extends State<Search> {
 
   void updateQuery() {
     setState(() {
-      _query = _controller.text;
+      if (_query != _controller.text) {
+        _query = _controller.text;
+        _sneakerTiles = _constructList();
+      }
     });
   }
 
