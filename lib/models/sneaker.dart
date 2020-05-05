@@ -40,4 +40,14 @@ class Sneaker {
       smallImage: data['smallImage'] ?? '',
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Sneaker &&
+              runtimeType == other.runtimeType &&
+              name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
