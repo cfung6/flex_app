@@ -44,7 +44,7 @@ class _SneakerScreenState extends State<SneakerScreen> {
     return Container(
       color: Colors.white,
       child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         children: <Widget>[
           CachedNetworkImage(
             imageUrl: widget.sneaker.bigImage,
@@ -88,11 +88,9 @@ class _SneakerScreenState extends State<SneakerScreen> {
             ),
           ),
           const SizedBox(height: 20.0),
-          sneakerInList
-              ? _addedToCollectionButton()
-              : _addToCollectionButton(),
+          sneakerInList ? _addedToCollectionButton() : _addToCollectionButton(),
           const SizedBox(height: 10.0),
-          Divider(
+          const Divider(
             thickness: 3.0,
             indent: 90.0,
             endIndent: 90.0,
@@ -112,7 +110,7 @@ class _SneakerScreenState extends State<SneakerScreen> {
     return Align(
       child: RaisedButton(
         onPressed: () async {
-          bool success = await DatabaseHelper(displayName: widget.displayName)
+          bool success = await DatabaseHelper(widget.displayName)
               .addSneakerToCollection(widget.sneaker);
           setState(() {
             if (success) {

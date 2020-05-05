@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flex/models/user.dart';
 import 'package:flex/services/auth.dart';
+import 'package:flex/services/database_helper.dart';
 import 'package:flex/wrappers/display_name_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -124,7 +125,7 @@ class _SignUpState extends State<SignUp> {
                       .textTheme,
                   child: Text('Register'),
                   onPressed: () async {
-                    _validateAllFields();
+                    await _validateAllFields();
                     if (_formKey.currentState.validate()) {
                       setState(() => _loading = true);
                       User user = await _tryToRegister();
@@ -151,7 +152,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   //local validation
-  void _validateAllFields() {
+  Future<void> _validateAllFields() async {
     //TODO: Validate uniqueness of display name
     setState(() {
       _displayName = _displayNameController.text.trim();
@@ -168,6 +169,12 @@ class _SignUpState extends State<SignUp> {
         return;
       }
     });
+
+    if (await DatabaseHelper(_displayName).userExists()) {
+      setState(() {
+        _displayNameError = 'This name is taken';
+      });
+    }
   }
 
   //validation from firebase

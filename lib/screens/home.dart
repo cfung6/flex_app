@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
     final displayName = Provider.of<String>(context);
 
     return StreamProvider.value(
-      value: DatabaseHelper(displayName: displayName).getSneakerCollection(),
+      value: DatabaseHelper(displayName).getSneakerCollection(),
       initialData: List<Sneaker>(),
       catchError: (_, error) {
         log(error.toString());
