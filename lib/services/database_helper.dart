@@ -25,6 +25,10 @@ class DatabaseHelper {
         .map(snapshotToSneakerList);
   }
 
+  List<Sneaker> getSneakerCollectionFromDoc(DocumentSnapshot doc) {
+    return snapshotToSneakerList(doc);
+  }
+
   //DocumentSnapshot returns in the form of:
   //{
   //  sneakers: {...},
@@ -96,5 +100,19 @@ class DatabaseHelper {
       return false;
     }
     return true;
+  }
+
+  Future<List<DocumentSnapshot>> getUsersContainingQuery(String query) async {
+    final snapshot = await _userCollection.getDocuments();
+    final List<DocumentSnapshot> users = [];
+    final String upperCaseQuery = query.toUpperCase();
+
+    for (DocumentSnapshot doc in snapshot.documents) {
+      if (doc.documentID.contains(upperCaseQuery)) {
+        users.add(doc);
+      }
+    }
+
+    return users;
   }
 }

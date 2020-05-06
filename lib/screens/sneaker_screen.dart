@@ -18,25 +18,25 @@ class SneakerScreen extends StatefulWidget {
 }
 
 class _SneakerScreenState extends State<SneakerScreen> {
-  String releaseDate = 'Unknown';
-  String price;
+  String _releaseDate = 'Unknown';
+  String _price;
 
   //true if the sneaker is in the current user's sneaker collection
-  bool sneakerInList;
+  bool _sneakerInList;
 
   @override
   void initState() {
     super.initState();
     DateTime releaseDateTime = DateTime.parse(widget.sneaker.releaseDate);
-    releaseDate = DateFormat.yMMMMd('en_US').format(releaseDateTime);
+    _releaseDate = DateFormat.yMMMMd('en_US').format(releaseDateTime);
 
     if (widget.sneaker.price == null || widget.sneaker.price == 0) {
-      price = 'Unknown';
+      _price = 'Unknown';
     } else {
-      price = widget.sneaker.price.toString();
+      _price = widget.sneaker.price.toString();
     }
 
-    sneakerInList = widget.sneakerInList;
+    _sneakerInList = widget.sneakerInList;
   }
 
   @override
@@ -70,7 +70,7 @@ class _SneakerScreenState extends State<SneakerScreen> {
                 TextSpan(
                     text: 'Release date: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: releaseDate),
+                TextSpan(text: _releaseDate),
               ],
             ),
           ),
@@ -83,12 +83,14 @@ class _SneakerScreenState extends State<SneakerScreen> {
                 TextSpan(
                     text: 'Price: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: '$price USD'),
+                TextSpan(text: '$_price USD'),
               ],
             ),
           ),
           const SizedBox(height: 20.0),
-          sneakerInList ? _addedToCollectionButton() : _addToCollectionButton(),
+          _sneakerInList
+              ? _addedToCollectionButton()
+              : _addToCollectionButton(),
           const SizedBox(height: 10.0),
           const Divider(
             thickness: 3.0,
@@ -114,7 +116,7 @@ class _SneakerScreenState extends State<SneakerScreen> {
               .addSneakerToCollection(widget.sneaker);
           setState(() {
             if (success) {
-              sneakerInList = true;
+              _sneakerInList = true;
             }
           });
         },

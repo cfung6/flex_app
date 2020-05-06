@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flex/models/sneaker.dart';
 import 'package:flex/screens/sneaker_screen.dart';
-import 'package:flex/services/auth.dart';
 import 'package:flex/ui/search_bar.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
@@ -13,24 +12,22 @@ import 'loading.dart';
 
 class Search extends StatefulWidget {
   @override
-  SearchState createState() => SearchState();
+  _SearchState createState() => _SearchState();
 }
 
 //public for search bar to access
-class SearchState extends State<Search> {
+class _SearchState extends State<Search> {
   String _query = "";
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<Sneaker> _sneakers;
   String _displayName;
 
-  final Auth _auth = Auth();
-
   Future<List<SneakerTile>> _sneakerTiles;
 
   @override
   void initState() {
-    _controller.addListener(updateQuery);
+    _controller.addListener(_updateQuery);
     _sneakerTiles = _constructList();
     super.initState();
   }
@@ -45,7 +42,7 @@ class SearchState extends State<Search> {
         SearchBar(
           controller: _controller,
           focusNode: _focusNode,
-          searchPage: this,
+          onSearchBarClear: _updateQuery,
         ),
         FutureBuilder<List<SneakerTile>>(
           future: _sneakerTiles,
@@ -68,13 +65,17 @@ class SearchState extends State<Search> {
     );
   }
 
-  void updateQuery() {
-    setState(() {
-      if (_query != _controller.text) {
-        _query = _controller.text;
-        _sneakerTiles = _constructList();
-      }
-    });
+  Widget _buildSearchResults(List<SneakerTile> sneakerList) {
+    return Expanded(
+      child: GridView.builder(
+        gridDelegate:
+        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int i) {
+          return sneakerList[i];
+        },
+        itemCount: sneakerList.length,
+      ),
+    );
   }
 
   Future<List<SneakerTile>> _constructList() async {
@@ -116,17 +117,13 @@ class SearchState extends State<Search> {
     return sneakerList;
   }
 
-  Widget _buildSearchResults(List<SneakerTile> sneakerList) {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (BuildContext context, int i) {
-          return sneakerList[i];
-        },
-        itemCount: sneakerList.length,
-      ),
-    );
+  void _updateQuery() {
+    setState(() {
+      if (_query != _controller.text.trim()) {
+        _query = _controller.text.trim();
+        _sneakerTiles = _constructList();
+      }
+    });
   }
 
 //  Future<void> _addSneakerToCurrentUserCollection(Sneaker s) async {

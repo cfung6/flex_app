@@ -1,15 +1,14 @@
-import 'package:flex/screens/search.dart';
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
-  final SearchState searchPage;
+  final Function onSearchBarClear;
 
   const SearchBar({
     @required this.controller,
     @required this.focusNode,
-    @required this.searchPage,
+    this.onSearchBarClear,
   });
 
   @override
@@ -59,7 +58,7 @@ class SearchBarState extends State<SearchBar> {
                             icon: Icon(Icons.clear),
                             onPressed: () {
                               widget.controller.clear();
-                              widget.searchPage.updateQuery();
+                              widget.onSearchBarClear();
                             },
                           ),
                     border: InputBorder.none,

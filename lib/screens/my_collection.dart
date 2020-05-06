@@ -10,19 +10,19 @@ class MyCollection extends StatefulWidget {
 }
 
 class _MyCollectionState extends State<MyCollection> {
-  List<Sneaker> sneakers;
-  String displayName;
+  List<Sneaker> _sneakers;
+  String _displayName;
 
   @override
   Widget build(BuildContext context) {
-    sneakers = Provider.of<List<Sneaker>>(context);
-    displayName = Provider.of<String>(context);
+    _sneakers = Provider.of<List<Sneaker>>(context);
+    _displayName = Provider.of<String>(context);
 
     return _buildCollectionList();
   }
 
   Widget _buildCollectionList() {
-    List<SneakerTile> sneakerTiles = _sneakerListToSneakerTileList(sneakers);
+    List<SneakerTile> sneakerTiles = _sneakerListToSneakerTileList(_sneakers);
 
     return Column(
       children: <Widget>[
@@ -61,8 +61,8 @@ class _MyCollectionState extends State<MyCollection> {
         builder: (_) =>
             SneakerScreen(
               sneaker: s,
-              sneakerInList: sneakers.contains(s),
-              displayName: displayName,
+              sneakerInList: _sneakers.contains(s),
+              displayName: _displayName,
             ),
       ),
     );

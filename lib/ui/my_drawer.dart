@@ -75,24 +75,34 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: const Text('Search'),
+              title: const Text('Search Users'),
+              leading: const Icon(
+                Icons.person,
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                drawerNotifier.updateScreen('Search Users');
+              },
+            ),
+            ListTile(
+              title: const Text('Search Sneakers'),
               leading: const Icon(
                 Icons.search,
               ),
               onTap: () {
                 Navigator.of(context).pop();
-                drawerNotifier.updateScreen('Search');
+                drawerNotifier.updateScreen('Search Sneakers');
               },
             ),
             ListTile(
-              title: const Text('My collection'),
+              title: const Text('My Collection'),
               leading: Image.asset(
                 'assets/images/yeezy.png',
                 width: 35.0,
               ),
               onTap: () {
                 Navigator.of(context).pop();
-                drawerNotifier.updateScreen('Collection');
+                drawerNotifier.updateScreen('My Collection');
               },
             ),
           ],
