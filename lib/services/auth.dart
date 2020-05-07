@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flex/models/user.dart';
+import 'package:flex/services/database_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth {
@@ -73,6 +74,9 @@ class Auth {
 
 //      _userReloadStreamController.add(user);
       await updateDisplayNameLocal(displayName);
+
+      await DatabaseHelper(displayName).addDisplayNameField();
+
       return User(userInfo: user);
     } catch (e) {
       log(e.toString());
