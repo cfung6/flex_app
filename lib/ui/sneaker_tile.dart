@@ -9,8 +9,13 @@ import 'package:provider/provider.dart';
 class SneakerTile extends StatelessWidget {
   final Sneaker sneaker;
   final void Function(Sneaker s) onTap;
+  final bool showMenu;
 
-  const SneakerTile({@required this.sneaker, @required this.onTap});
+  const SneakerTile({
+    @required this.sneaker,
+    @required this.onTap,
+    this.showMenu = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,44 +75,52 @@ class SneakerTile extends StatelessWidget {
               ),
             ),
           ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Material(
-                child: PopupMenuButton(
-                  onSelected: (value) async {
-                    if (value == 'Remove') {
-                      if (!(await DatabaseHelper(displayName)
-                          .removeSneakerFromCollection(sneaker))) {
-                        //TODO: Return Error
-                        log('error removing');
-                      }
-                    } else if (value == 'Add') {
-                      if (!(await DatabaseHelper(displayName)
-                          .addSneakerToCollection(sneaker))) {
-                        //TODO: Return Error
-                        log('error adding');
-                      }
-                    }
-                  },
-                  itemBuilder: (context) =>
-                  <PopupMenuEntry<String>>[
-                    contains
-                        ? const PopupMenuItem<String>(
-                      value: 'Remove',
-                      child: Text('Remove from collection'),
-                    )
-                        : const PopupMenuItem<String>(
-                      value: 'Add',
-                      child: Text('Add to collection'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          _returnMenuButton(displayName, contains),
         ],
       ),
     );
+  }
+
+  Widget _returnMenuButton(String displayName, bool contains) {
+    if (showMenu) {
+      return Positioned.fill(
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Material(
+            child: PopupMenuButton(
+              onSelected: (value) async {
+                if (value == 'Remove') {
+                  if (!(await DatabaseHelper(displayName)
+                      .removeSneakerFromCollection(sneaker))) {
+                    //TODO: Return Error
+                    log('error removing');
+                  }
+                } else if (value == 'Add') {
+                  if (!(await DatabaseHelper(displayName)
+                      .addSneakerToCollection(sneaker))) {
+                    //TODO: Return Error
+                    log('error adding');
+                  }
+                }
+              },
+              itemBuilder: (context) =>
+              <PopupMenuEntry<String>>[
+                contains
+                    ? const PopupMenuItem<String>(
+                  value: 'Remove',
+                  child: Text('Remove from collection'),
+                )
+                    : const PopupMenuItem<String>(
+                  value: 'Add',
+                  child: Text('Add to collection'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      return null;
+    }
   }
 }

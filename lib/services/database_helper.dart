@@ -195,4 +195,13 @@ class DatabaseHelper {
 
     return users;
   }
+
+  String getDisplayNameFromDoc(DocumentSnapshot doc) {
+    String name = doc.data['display_name'];
+
+    if (name == null) {
+      return '';
+    }
+    return name;
+  }
 }
