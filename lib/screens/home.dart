@@ -13,13 +13,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final displayName = Provider.of<String>(context);
 
-    return StreamProvider.value(
-      value: DatabaseHelper(displayName).getSneakerCollection(),
-      initialData: List<Sneaker>(),
-      catchError: (_, error) {
-        log(error.toString());
-        return List<Sneaker>();
-      },
+    return MultiProvider(
       child: Scaffold(
         appBar: MyAppBar(
             title: Provider
@@ -31,6 +25,24 @@ class Home extends StatelessWidget {
           navigationProvider.getScreen,
         ),
       ),
+      providers: [
+        StreamProvider<List<Sneaker>>.value(
+          value: DatabaseHelper(displayName).getSneakerCollection(),
+          initialData: List<Sneaker>(),
+          catchError: (_, error) {
+            log(error.toString());
+            return List<Sneaker>();
+          },
+        ),
+        StreamProvider<List<String>>.value(
+          value: DatabaseHelper(displayName).getFriends(),
+          initialData: List<String>(),
+          catchError: (_, error) {
+            log(error.toString());
+            return List<String>();
+          },
+        ),
+      ],
     );
   }
 }
