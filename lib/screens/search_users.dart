@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flex/screens/user_screen.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class SearchUsers extends StatefulWidget {
 class _SearchUsersState extends State<SearchUsers> {
   String _query = '';
   String _displayName;
+  List<String> _friends;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -31,6 +33,7 @@ class _SearchUsersState extends State<SearchUsers> {
   @override
   Widget build(BuildContext context) {
     _displayName = Provider.of<String>(context);
+    _friends = Provider.of<List<String>>(context);
 
     return Column(
       children: <Widget>[
@@ -71,6 +74,15 @@ class _SearchUsersState extends State<SearchUsers> {
               title: Text(
                 name,
               ),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) =>
+                      UserScreen(
+                        doc: docs[index],
+                        areFriends: _friends.contains(name),
+                      ),
+                ));
+              },
             );
           } else {
             return Container(
