@@ -78,19 +78,31 @@ class _SearchUsersState extends State<SearchUsers> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) =>
-                  StreamProvider<List<Sneaker>>.value(
-                    value: DatabaseHelper(_userDisplayName)
-                        .getSneakerCollection(),
+                      MultiProvider(
                     child: UserScreen(
                       doc: docs[index],
-                      areFriends: _friends.contains(name),
                       currentUserDisplayName: _userDisplayName,
                     ),
-                    initialData: List<Sneaker>(),
-                    catchError: (_, error) {
-                      log(error.toString());
-                      return List<Sneaker>();
-                    },
+                        providers: [
+                          StreamProvider<List<Sneaker>>.value(
+                            value: DatabaseHelper(_userDisplayName)
+                                .getSneakerCollection(),
+                            initialData: List<Sneaker>(),
+                            catchError: (_, error) {
+                              log(error.toString());
+                              return List<Sneaker>();
+                            },
+                          ),
+                          StreamProvider<List<String>>.value(
+                            value: DatabaseHelper(_userDisplayName)
+                                .getFriends(),
+                            initialData: List<String>(),
+                            catchError: (_, error) {
+                              log(error.toString());
+                              return List<String>();
+                            },
+                          ),
+                        ],
                   ),
                 ));
               },
