@@ -20,6 +20,7 @@ class _SearchUsersState extends State<SearchUsers> {
   List<String> _friends;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  String _userDisplayName;
 
   Future<List<DocumentSnapshot>> _userList;
 
@@ -33,6 +34,7 @@ class _SearchUsersState extends State<SearchUsers> {
   @override
   Widget build(BuildContext context) {
     _friends = Provider.of<List<String>>(context);
+    _userDisplayName = Provider.of<String>(context);
 
     return Column(
       children: <Widget>[
@@ -76,13 +78,20 @@ class _SearchUsersState extends State<SearchUsers> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) =>
-                      UserScreen(
-                        doc: docs[index],
-                        areFriends: _friends.contains(name),
-                        currentUserDisplayName: Provider.of<String>(context),
-                        currentUserSneakers: Provider.of<List<Sneaker>>(
-                            context),
-                      ),
+                  StreamProvider<List<Sneaker>>.value(
+                    value: DatabaseHelper(_userDisplayName)
+                        .getSneakerCollection(),
+                    child: UserScreen(
+                      doc: docs[index],
+                      areFriends: _friends.contains(name),
+                      currentUserDisplayName: _userDisplayName,
+                    ),
+                    initialData: List<Sneaker>(),
+                    catchError: (_, error) {
+                      log(error.toString());
+                      return List<Sneaker>();
+                    },
+                  ),
                 ));
               },
             );

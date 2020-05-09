@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import 'package:flex/models/sneaker.dart';
 import 'package:flex/screens/sneaker_screen.dart';
+import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Collection extends StatelessWidget {
   final List<Sneaker> viewedUsersSneakers; //collection of the user being viewed
-  final List<Sneaker> currentUserSneakers;
   final String viewedUserDisplayName;
   final String currentUserDisplayName;
   final bool showMenu;
@@ -14,7 +17,6 @@ class Collection extends StatelessWidget {
   Collection({
     @required this.viewedUsersSneakers,
     @required this.viewedUserDisplayName,
-    @required this.currentUserSneakers,
     @required this.currentUserDisplayName,
     this.showMenu = true,
     this.currentUserSameAsViewedUser = false,
@@ -31,7 +33,7 @@ class Collection extends StatelessWidget {
     return Expanded(
       child: GridView.builder(
         gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (BuildContext context, int i) {
           return sneakerTiles[i];
         },
@@ -48,9 +50,8 @@ class Collection extends StatelessWidget {
         SneakerTile(
           sneaker: viewedUsersSneakers[i],
           onTap: _goToSneakerScreen,
-          showMenu: showMenu,
-          contains: currentUserSneakers.contains(viewedUsersSneakers[i]),
           displayName: currentUserDisplayName,
+          showMenu: showMenu,
         ),
       );
     }
@@ -61,10 +62,18 @@ class Collection extends StatelessWidget {
   void _goToSneakerScreen(BuildContext context, Sneaker s) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => SneakerScreen(
-          sneaker: s,
-          sneakerInList: currentUserSneakers.contains(s),
-          displayName: currentUserDisplayName,
+        builder: (_) =>
+        StreamProvider<List<Sneaker>>.value(
+          child: SneakerScreen(
+            sneaker: s,
+            displayName: currentUserDisplayName,
+          ),
+          value: DatabaseHelper(currentUserDisplayName).getSneakerCollection(),
+          initialData: List<Sneaker>(),
+          catchError: (_, error) {
+            log(error.toString());
+            return List<Sneaker>();
+          },
         ),
       ),
     );

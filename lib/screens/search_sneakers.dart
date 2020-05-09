@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flex/models/sneaker.dart';
 import 'package:flex/screens/sneaker_screen.dart';
+import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/search_bar.dart';
 import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,6 @@ class _SearchState extends State<Search> {
               sneaker: s,
               onTap: _goToSneakerScreen,
               displayName: _displayName,
-              contains: _sneakers.contains(s),
             ),
           );
           j++;
@@ -143,11 +143,18 @@ class _SearchState extends State<Search> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) =>
-            SneakerScreen(
-              sneaker: s,
-              sneakerInList: _sneakers.contains(s),
-              displayName: _displayName,
-            ),
+        StreamProvider<List<Sneaker>>.value(
+          value: DatabaseHelper(_displayName).getSneakerCollection(),
+          child: SneakerScreen(
+            sneaker: s,
+            displayName: _displayName,
+          ),
+          initialData: List<Sneaker>(),
+          catchError: (_, error) {
+            log(error.toString());
+            return List<Sneaker>();
+          },
+        ),
       ),
     );
   }

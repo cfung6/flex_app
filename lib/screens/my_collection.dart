@@ -14,7 +14,6 @@ class MyCollection extends StatelessWidget {
         Collection(
           viewedUsersSneakers: sneakers,
           viewedUserDisplayName: displayName,
-          currentUserSneakers: sneakers,
           currentUserDisplayName: displayName,
           showMenu: true,
           currentUserSameAsViewedUser: true,

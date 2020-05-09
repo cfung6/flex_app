@@ -4,20 +4,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex/models/sneaker.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SneakerTile extends StatefulWidget {
   final Sneaker sneaker;
   final void Function(BuildContext context, Sneaker s) onTap;
   final String displayName;
   final bool showMenu;
-  final bool contains;
 
   const SneakerTile({
     @required this.sneaker,
     @required this.onTap,
-    this.displayName = '',
+    @required this.displayName,
     this.showMenu = true,
-    this.contains = false,
   });
 
   @override
@@ -25,16 +24,12 @@ class SneakerTile extends StatefulWidget {
 }
 
 class _SneakerTileState extends State<SneakerTile> {
-  bool contains;
-
-  @override
-  void initState() {
-    contains = widget.contains;
-    super.initState();
-  }
+  bool _contains;
 
   @override
   Widget build(BuildContext context) {
+    _contains = Provider.of<List<Sneaker>>(context).contains(widget.sneaker);
+
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: Stack(
@@ -115,12 +110,12 @@ class _SneakerTileState extends State<SneakerTile> {
                   }
                 }
                 setState(() {
-                  contains = !contains;
+                  _contains = !_contains;
                 });
               },
               itemBuilder: (context) =>
               <PopupMenuEntry<String>>[
-                contains
+                _contains
                     ? const PopupMenuItem<String>(
                   value: 'Remove',
                   child: Text('Remove from collection'),

@@ -10,14 +10,12 @@ class UserScreen extends StatelessWidget {
   //if the current user is friends with the user being viewed
   final bool areFriends;
 
-  final List<Sneaker> currentUserSneakers;
   final String currentUserDisplayName;
 
   UserScreen({
     @required this.doc,
     @required this.areFriends,
-    @required this.currentUserSneakers,
-    @required this.currentUserDisplayName
+    @required this.currentUserDisplayName,
   });
 
   @override
@@ -64,7 +62,6 @@ class UserScreen extends StatelessWidget {
           Collection(
             viewedUsersSneakers: sneakers,
             viewedUserDisplayName: userDisplayName,
-            currentUserSneakers: currentUserSneakers,
             currentUserDisplayName: currentUserDisplayName,
             showMenu: false,
             currentUserSameAsViewedUser: false,

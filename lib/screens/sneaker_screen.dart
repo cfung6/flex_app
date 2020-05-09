@@ -3,17 +3,16 @@ import 'package:flex/models/sneaker.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'loading.dart';
 
 class SneakerScreen extends StatefulWidget {
   final Sneaker sneaker;
-  final bool sneakerInList;
   final String displayName;
 
   SneakerScreen({
     @required this.sneaker,
-    @required this.sneakerInList,
     @required this.displayName,
   });
 
@@ -40,12 +39,13 @@ class _SneakerScreenState extends State<SneakerScreen> {
     } else {
       _price = widget.sneaker.price.toString();
     }
-
-    _sneakerInList = widget.sneakerInList;
   }
 
   @override
   Widget build(BuildContext context) {
+    _sneakerInList =
+        Provider.of<List<Sneaker>>(context).contains(widget.sneaker);
+
     return _loading
         ? Loading()
         : Container(
