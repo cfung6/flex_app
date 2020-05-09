@@ -106,6 +106,8 @@ class _SearchState extends State<Search> {
             SneakerTile(
               sneaker: s,
               onTap: _goToSneakerScreen,
+              displayName: _displayName,
+              contains: _sneakers.contains(s),
             ),
           );
           j++;
@@ -137,7 +139,7 @@ class _SearchState extends State<Search> {
 //    }
 //  }
 
-  void _goToSneakerScreen(Sneaker s) {
+  void _goToSneakerScreen(BuildContext context, Sneaker s) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) =>

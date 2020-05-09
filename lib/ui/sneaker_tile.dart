@@ -4,25 +4,37 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex/models/sneaker.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class SneakerTile extends StatelessWidget {
+class SneakerTile extends StatefulWidget {
   final Sneaker sneaker;
-  final void Function(Sneaker s) onTap;
+  final void Function(BuildContext context, Sneaker s) onTap;
+  final String displayName;
   final bool showMenu;
+  final bool contains;
 
   const SneakerTile({
     @required this.sneaker,
     @required this.onTap,
+    this.displayName = '',
     this.showMenu = true,
+    this.contains = false,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final List<Sneaker> sneakerList = Provider.of<List<Sneaker>>(context);
-    final bool contains = sneakerList.contains(sneaker);
-    final String displayName = Provider.of<String>(context);
+  _SneakerTileState createState() => _SneakerTileState();
+}
 
+class _SneakerTileState extends State<SneakerTile> {
+  bool contains;
+
+  @override
+  void initState() {
+    contains = widget.contains;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: Stack(
@@ -42,7 +54,7 @@ class SneakerTile extends StatelessWidget {
 //                      ),
                       CachedNetworkImage(
                         width: 150,
-                        imageUrl: sneaker.smallImage,
+                        imageUrl: widget.sneaker.smallImage,
                         placeholder: (_, __) => CircularProgressIndicator(),
                         errorWidget: (_, __, ___) =>
                             Image.asset('assets/images/no_image.png'),
@@ -56,7 +68,7 @@ class SneakerTile extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        sneaker.name,
+                        widget.sneaker.name,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -70,19 +82,19 @@ class SneakerTile extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  onTap(sneaker);
+                  widget.onTap(context, widget.sneaker);
                 },
               ),
             ),
           ),
-          _returnMenuButton(displayName, contains),
+          _returnMenuButton(widget.displayName),
         ],
       ),
     );
   }
 
-  Widget _returnMenuButton(String displayName, bool contains) {
-    if (showMenu) {
+  Widget _returnMenuButton(String displayName) {
+    if (widget.showMenu) {
       return Positioned.fill(
         child: Align(
           alignment: Alignment.topRight,
@@ -91,17 +103,20 @@ class SneakerTile extends StatelessWidget {
               onSelected: (value) async {
                 if (value == 'Remove') {
                   if (!(await DatabaseHelper(displayName)
-                      .removeSneakerFromCollection(sneaker))) {
+                      .removeSneakerFromCollection(widget.sneaker))) {
                     //TODO: Return Error
                     log('error removing');
                   }
                 } else if (value == 'Add') {
                   if (!(await DatabaseHelper(displayName)
-                      .addSneakerToCollection(sneaker))) {
+                      .addSneakerToCollection(widget.sneaker))) {
                     //TODO: Return Error
                     log('error adding');
                   }
                 }
+                setState(() {
+                  contains = !contains;
+                });
               },
               itemBuilder: (context) =>
               <PopupMenuEntry<String>>[
@@ -120,7 +135,10 @@ class SneakerTile extends StatelessWidget {
         ),
       );
     } else {
-      return null;
+      return Container(
+        height: 0,
+        width: 0,
+      );
     }
   }
 }

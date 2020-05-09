@@ -22,11 +22,7 @@ class DatabaseHelper {
     return _userCollection
         .document(_upperCaseName)
         .snapshots()
-        .map(_snapshotToSneakerList);
-  }
-
-  List<Sneaker> getSneakerCollectionFromDoc(DocumentSnapshot doc) {
-    return _snapshotToSneakerList(doc);
+        .map(snapshotToSneakerList);
   }
 
   //DocumentSnapshot returns in the form of:
@@ -34,7 +30,7 @@ class DatabaseHelper {
   //  sneakers: {...},
   //  otherProperty: {...},
   //}
-  List<Sneaker> _snapshotToSneakerList(DocumentSnapshot doc) {
+  List<Sneaker> snapshotToSneakerList(DocumentSnapshot doc) {
     List<Sneaker> sneakerList = [];
 
     if (doc.data['sneakers'] == null) {

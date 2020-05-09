@@ -142,8 +142,8 @@ class _SneakerScreenState extends State<SneakerScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(Icons.check),
-            Text('Added to collection'),
+            const Icon(Icons.check),
+            const Text('Added to collection'),
           ],
         ),
         textColor: Colors.green,

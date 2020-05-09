@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flex/models/sneaker.dart';
 import 'package:flex/services/database_helper.dart';
+import 'package:flex/ui/collection.dart';
 import 'package:flutter/material.dart';
 
-class UserScreen extends StatefulWidget {
+class UserScreen extends StatelessWidget {
   final DocumentSnapshot doc;
 
   //if the current user is friends with the user being viewed
@@ -14,32 +16,21 @@ class UserScreen extends StatefulWidget {
   });
 
   @override
-  _UserScreenState createState() => _UserScreenState();
-}
-
-class _UserScreenState extends State<UserScreen> {
-  String _userDisplayName;
-  bool areFriends;
-
-  @override
-  void initState() {
-    _userDisplayName = DatabaseHelper('').getDisplayNameFromDoc(widget.doc);
-    areFriends = widget.areFriends;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    String userDisplayName = DatabaseHelper('').getDisplayNameFromDoc(doc);
+    List<Sneaker> sneakers =
+    DatabaseHelper(userDisplayName).snapshotToSneakerList(doc);
+
     return Scaffold(
       body: Column(
         children: <Widget>[
-          SizedBox(height: 30.0),
+          const SizedBox(height: 20.0),
           Image.asset(
             'assets/images/no_image.png',
-            height: 200.0,
+            height: 150.0,
           ),
           Text(
-            _userDisplayName,
+            userDisplayName,
             textAlign: TextAlign.center,
             style: Theme
                 .of(context)
@@ -47,15 +38,15 @@ class _UserScreenState extends State<UserScreen> {
                 .headline4
                 .copyWith(fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
           _displayFriendButton(),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
           const Divider(
             thickness: 3.0,
             indent: 90.0,
             endIndent: 90.0,
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
           Text(
             'Collection',
             textAlign: TextAlign.center,
@@ -64,7 +55,12 @@ class _UserScreenState extends State<UserScreen> {
                 .textTheme
                 .headline6,
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
+          Collection(
+            sneakers: sneakers,
+            displayName: userDisplayName,
+            showMenu: false,
+          ),
         ],
       ),
     );
@@ -77,9 +73,9 @@ class _UserScreenState extends State<UserScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(Icons.person_add),
-            SizedBox(width: 10.0),
-            Text('Add friend'),
+            const Icon(Icons.person_add),
+            const SizedBox(width: 10.0),
+            const Text('Add friend'),
           ],
         ),
         color: Colors.green,
