@@ -4,16 +4,20 @@ import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
 
 class Collection extends StatelessWidget {
-  final List<Sneaker> sneakers;
-  final String displayName;
+  final List<Sneaker> viewedUsersSneakers; //collection of the user being viewed
+  final List<Sneaker> currentUserSneakers;
+  final String viewedUserDisplayName;
+  final String currentUserDisplayName;
   final bool showMenu;
-  final bool allContained;
+  final bool currentUserSameAsViewedUser;
 
   Collection({
-    @required this.sneakers,
-    @required this.displayName,
+    @required this.viewedUsersSneakers,
+    @required this.viewedUserDisplayName,
+    @required this.currentUserSneakers,
+    @required this.currentUserDisplayName,
     this.showMenu = true,
-    this.allContained = false,
+    this.currentUserSameAsViewedUser = false,
   });
 
   @override
@@ -22,7 +26,7 @@ class Collection extends StatelessWidget {
   }
 
   Widget _buildCollectionList() {
-    List<SneakerTile> sneakerTiles = _sneakerListToSneakerTileList(sneakers);
+    List<SneakerTile> sneakerTiles = _sneakerListToSneakerTileList();
 
     return Expanded(
       child: GridView.builder(
@@ -36,17 +40,17 @@ class Collection extends StatelessWidget {
     );
   }
 
-  List<SneakerTile> _sneakerListToSneakerTileList(List<Sneaker> sneakers) {
+  List<SneakerTile> _sneakerListToSneakerTileList() {
     List<SneakerTile> sneakerTiles = [];
 
-    for (int i = 0; i < sneakers.length; i++) {
+    for (int i = 0; i < viewedUsersSneakers.length; i++) {
       sneakerTiles.add(
         SneakerTile(
-          sneaker: sneakers[i],
+          sneaker: viewedUsersSneakers[i],
           onTap: _goToSneakerScreen,
           showMenu: showMenu,
-          displayName: displayName,
-          contains: allContained,
+          contains: currentUserSneakers.contains(viewedUsersSneakers[i]),
+          displayName: currentUserDisplayName,
         ),
       );
     }
@@ -59,8 +63,8 @@ class Collection extends StatelessWidget {
       MaterialPageRoute(
         builder: (_) => SneakerScreen(
           sneaker: s,
-          sneakerInList: sneakers.contains(s),
-          displayName: displayName,
+          sneakerInList: currentUserSneakers.contains(s),
+          displayName: currentUserDisplayName,
         ),
       ),
     );

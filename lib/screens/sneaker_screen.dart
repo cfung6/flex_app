@@ -11,9 +11,11 @@ class SneakerScreen extends StatefulWidget {
   final bool sneakerInList;
   final String displayName;
 
-  SneakerScreen({@required this.sneaker,
+  SneakerScreen({
+    @required this.sneaker,
     @required this.sneakerInList,
-    @required this.displayName});
+    @required this.displayName,
+  });
 
   @override
   _SneakerScreenState createState() => _SneakerScreenState();

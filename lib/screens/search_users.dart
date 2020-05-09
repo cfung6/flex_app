@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flex/models/sneaker.dart';
 import 'package:flex/screens/user_screen.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/search_bar.dart';
@@ -16,7 +17,6 @@ class SearchUsers extends StatefulWidget {
 
 class _SearchUsersState extends State<SearchUsers> {
   String _query = '';
-  String _displayName;
   List<String> _friends;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -32,7 +32,6 @@ class _SearchUsersState extends State<SearchUsers> {
 
   @override
   Widget build(BuildContext context) {
-    _displayName = Provider.of<String>(context);
     _friends = Provider.of<List<String>>(context);
 
     return Column(
@@ -43,7 +42,7 @@ class _SearchUsersState extends State<SearchUsers> {
           onSearchBarClear: _updateQuery,
         ),
         FutureBuilder<List<DocumentSnapshot>>(
-          future: _getUsers(),
+          future: _userList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -80,6 +79,9 @@ class _SearchUsersState extends State<SearchUsers> {
                       UserScreen(
                         doc: docs[index],
                         areFriends: _friends.contains(name),
+                        currentUserDisplayName: Provider.of<String>(context),
+                        currentUserSneakers: Provider.of<List<Sneaker>>(
+                            context),
                       ),
                 ));
               },

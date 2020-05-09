@@ -12,10 +12,12 @@ class MyCollection extends StatelessWidget {
     return Column(
       children: <Widget>[
         Collection(
-          sneakers: sneakers,
-          displayName: displayName,
+          viewedUsersSneakers: sneakers,
+          viewedUserDisplayName: displayName,
+          currentUserSneakers: sneakers,
+          currentUserDisplayName: displayName,
           showMenu: true,
-          allContained: true,
+          currentUserSameAsViewedUser: true,
         ),
       ],
     );
