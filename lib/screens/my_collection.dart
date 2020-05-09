@@ -9,16 +9,29 @@ class MyCollection extends StatelessWidget {
     List<Sneaker> sneakers = Provider.of<List<Sneaker>>(context);
     String displayName = Provider.of<String>(context);
 
-    return Column(
-      children: <Widget>[
-        Collection(
-          viewedUsersSneakers: sneakers,
-          viewedUserDisplayName: displayName,
-          currentUserDisplayName: displayName,
-          showMenu: true,
-          currentUserSameAsViewedUser: true,
+    if (sneakers.isEmpty) {
+      return Center(
+        child: Text(
+          'Your collection is empty. Start adding to it by searching up your sneakers!',
+          style: Theme
+              .of(context)
+              .textTheme
+              .subtitle1,
+          textAlign: TextAlign.center,
         ),
-      ],
-    );
+      );
+    } else {
+      return Column(
+        children: <Widget>[
+          Collection(
+            viewedUsersSneakers: sneakers,
+            viewedUserDisplayName: displayName,
+            currentUserDisplayName: displayName,
+            showMenu: true,
+            currentUserSameAsViewedUser: true,
+          ),
+        ],
+      );
+    }
   }
 }

@@ -54,7 +54,7 @@ class _UserScreenState extends State<UserScreen> {
                 fontWeight: FontWeight.bold, color: Colors.black),
           ),
           const SizedBox(height: 10.0),
-          _displayFriendButton(
+          _displayFollowButton(
               userDisplayName, friends.contains(userDisplayName)),
           const SizedBox(height: 10.0),
           const Divider(
@@ -84,7 +84,7 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  Widget _displayFriendButton(String displayName, bool areFriends) {
+  Widget _displayFollowButton(String displayName, bool areFriends) {
     if (widget.currentUserDisplayName == displayName) {
       return Container(
         height: 0,
@@ -97,8 +97,8 @@ class _UserScreenState extends State<UserScreen> {
         onPressed: () async {
           setState(() => _loading = true);
           if (!(await DatabaseHelper(widget.currentUserDisplayName)
-              .removeFriend(displayName))) {
-            log('Error removing friend');
+              .unfollow(displayName))) {
+            log('Error unfollowing');
             //TODO: Error
           }
           setState(() => _loading = false);
@@ -111,7 +111,7 @@ class _UserScreenState extends State<UserScreen> {
               height: 30.0,
             ),
             const SizedBox(width: 10.0),
-            const Text('Remove friend'),
+            const Text('Unfollow'),
           ],
         ),
         color: Colors.red,
@@ -127,8 +127,8 @@ class _UserScreenState extends State<UserScreen> {
         onPressed: () async {
           setState(() => _loading = true);
           if (!(await DatabaseHelper(widget.currentUserDisplayName)
-              .addFriend(displayName))) {
-            log('Error adding friend');
+              .follow(displayName))) {
+            log('Error following');
             //TODO: Error
           }
           setState(() => _loading = false);
@@ -138,7 +138,7 @@ class _UserScreenState extends State<UserScreen> {
           children: <Widget>[
             const Icon(Icons.person_add),
             const SizedBox(width: 10.0),
-            const Text('Add friend'),
+            const Text('Follow'),
           ],
         ),
         color: Colors.green,

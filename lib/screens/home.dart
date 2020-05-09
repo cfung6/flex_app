@@ -35,7 +35,7 @@ class Home extends StatelessWidget {
           },
         ),
         StreamProvider<List<String>>.value(
-          value: DatabaseHelper(displayName).getFriends(),
+          value: DatabaseHelper(displayName).getFollowing(),
           initialData: List<String>(),
           catchError: (_, error) {
             log(error.toString());

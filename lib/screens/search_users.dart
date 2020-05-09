@@ -17,7 +17,6 @@ class SearchUsers extends StatefulWidget {
 
 class _SearchUsersState extends State<SearchUsers> {
   String _query = '';
-  List<String> _friends;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   String _userDisplayName;
@@ -33,7 +32,6 @@ class _SearchUsersState extends State<SearchUsers> {
 
   @override
   Widget build(BuildContext context) {
-    _friends = Provider.of<List<String>>(context);
     _userDisplayName = Provider.of<String>(context);
 
     return Column(
@@ -95,7 +93,7 @@ class _SearchUsersState extends State<SearchUsers> {
                           ),
                           StreamProvider<List<String>>.value(
                             value: DatabaseHelper(_userDisplayName)
-                                .getFriends(),
+                                .getFollowing(),
                             initialData: List<String>(),
                             catchError: (_, error) {
                               log(error.toString());
