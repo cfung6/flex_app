@@ -4,6 +4,8 @@ import 'package:flex/services/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'loading.dart';
+
 class SneakerScreen extends StatefulWidget {
   final Sneaker sneaker;
   final bool sneakerInList;
@@ -20,6 +22,7 @@ class SneakerScreen extends StatefulWidget {
 class _SneakerScreenState extends State<SneakerScreen> {
   String _releaseDate = 'Unknown';
   String _price;
+  bool _loading = false;
 
   //true if the sneaker is in the current user's sneaker collection
   bool _sneakerInList;
@@ -41,14 +44,17 @@ class _SneakerScreenState extends State<SneakerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return _loading
+        ? Loading()
+        : Container(
       color: Colors.white,
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         children: <Widget>[
           CachedNetworkImage(
             imageUrl: widget.sneaker.bigImage,
-            placeholder: (_, __) => Center(child: CircularProgressIndicator()),
+            placeholder: (_, __) =>
+                Center(child: CircularProgressIndicator()),
             errorWidget: (_, __, ___) =>
                 Image.asset('assets/images/no_image.png'),
           ),
@@ -56,7 +62,8 @@ class _SneakerScreenState extends State<SneakerScreen> {
           Text(
             widget.sneaker.name,
             textAlign: TextAlign.center,
-            style: Theme.of(context)
+            style: Theme
+                .of(context)
                 .textTheme
                 .headline5
                 .copyWith(fontWeight: FontWeight.bold),
@@ -65,7 +72,10 @@ class _SneakerScreenState extends State<SneakerScreen> {
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle1,
               children: <TextSpan>[
                 TextSpan(
                     text: 'Release date: ',
@@ -78,7 +88,10 @@ class _SneakerScreenState extends State<SneakerScreen> {
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle1,
               children: <TextSpan>[
                 TextSpan(
                     text: 'Price: ',
@@ -101,7 +114,10 @@ class _SneakerScreenState extends State<SneakerScreen> {
           Text(
             'Friends that own this shoe:',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           )
         ],
       ),
@@ -112,9 +128,13 @@ class _SneakerScreenState extends State<SneakerScreen> {
     return Align(
       child: RaisedButton(
         onPressed: () async {
+          setState(() {
+            _loading = true;
+          });
           bool success = await DatabaseHelper(widget.displayName)
               .addSneakerToCollection(widget.sneaker);
           setState(() {
+            _loading = false;
             if (success) {
               _sneakerInList = true;
             }
