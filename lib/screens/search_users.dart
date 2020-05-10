@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flex/models/sneaker.dart';
-import 'package:flex/provider_models/follower_list.dart';
 import 'package:flex/provider_models/follower_num.dart';
 import 'package:flex/provider_models/following_list.dart';
 import 'package:flex/provider_models/following_num.dart';
@@ -74,8 +73,8 @@ class _SearchUsersState extends State<SearchUsers> {
   Widget _buildUserSearchResults(List<DocumentSnapshot> docs) {
     return Expanded(
       child: ListView.builder(
-        itemBuilder: (context, index) {
-          String name = docs[index].data['display_name'];
+        itemBuilder: (context, i) {
+          String name = docs[i].data['display_name'];
 
           if (!(name == null || name.isEmpty)) {
             return ListTile(
@@ -87,7 +86,7 @@ class _SearchUsersState extends State<SearchUsers> {
                   builder: (_) =>
                       MultiProvider(
                     child: UserScreen(
-                      doc: docs[index],
+                      doc: docs[i],
                       currentUserDisplayName: _userDisplayName,
                     ),
                         providers: [
@@ -109,17 +108,8 @@ class _SearchUsersState extends State<SearchUsers> {
                               return FollowingList();
                             },
                           ),
-                          StreamProvider<FollowerList>.value(
-                            value: DatabaseHelper(_userDisplayName)
-                                .getFollowers(),
-                            initialData: FollowerList(),
-                            catchError: (_, error) {
-                              log(error.toString());
-                              return FollowerList();
-                            },
-                          ),
                           StreamProvider<FollowerNum>.value(
-                            value: DatabaseHelper(_userDisplayName)
+                            value: DatabaseHelper(name)
                                 .getNumFollowers(),
                             initialData: FollowerNum(),
                             catchError: (_, error) {
@@ -128,7 +118,7 @@ class _SearchUsersState extends State<SearchUsers> {
                             },
                           ),
                           StreamProvider<FollowingNum>.value(
-                            value: DatabaseHelper(_userDisplayName)
+                            value: DatabaseHelper(name)
                                 .getNumFollowing(),
                             initialData: FollowingNum(),
                             catchError: (_, error) {

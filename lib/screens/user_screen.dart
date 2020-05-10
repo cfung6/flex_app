@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flex/models/sneaker.dart';
+import 'package:flex/provider_models/follower_num.dart';
 import 'package:flex/provider_models/following_list.dart';
+import 'package:flex/provider_models/following_num.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/collection.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +13,7 @@ import 'package:provider/provider.dart';
 import 'loading.dart';
 
 //Values that UserScreen consumes:
-//  -FollowerList of this user
-//  -FollowingList of this user
+//  -FollowingList of current user
 //  -FollowerNum of this user
 //  -FollowingNum of this user
 
@@ -68,6 +69,8 @@ class _UserScreenState extends State<UserScreen> {
           const SizedBox(height: 10.0),
           _displayFollowButton(
               userDisplayName, following.contains(userDisplayName)),
+          const SizedBox(height: 20.0),
+          _buildFollowerAndFollowingCount(),
           const SizedBox(height: 10.0),
           const Divider(
             thickness: 3.0,
@@ -160,6 +163,59 @@ class _UserScreenState extends State<UserScreen> {
         padding:
         const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       ),
+    );
+  }
+
+  Widget _buildFollowerAndFollowingCount() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Text(
+              Provider
+                  .of<FollowerNum>(context)
+                  .numFollowers
+                  .toString(),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(height: 5.0),
+            const Text(
+              'Followers',
+            ),
+          ],
+        ),
+        const SizedBox(width: 25.0),
+        Column(
+          children: <Widget>[
+            Text(
+              Provider
+                  .of<FollowingNum>(context)
+                  .numFollowing
+                  .toString(),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+            const SizedBox(height: 5.0),
+            const Text(
+              'Following',
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

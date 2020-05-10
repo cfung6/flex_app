@@ -122,7 +122,7 @@ class _SneakerScreenState extends State<SneakerScreen> {
           ),
           const SizedBox(height: 10.0),
           Text(
-            'Friends that own this shoe:',
+            'People you follow that own this shoe:',
             textAlign: TextAlign.center,
             style: Theme
                 .of(context)
