@@ -10,6 +10,15 @@ import 'package:provider/provider.dart';
 
 import 'loading.dart';
 
+//Values that UserScreen consumes:
+//  -FollowerList of this user
+//  -FollowingList of this user
+//  -FollowerNum of this user
+//  -FollowingNum of this user
+
+//Screens that push this screen to navigator stack:
+//  -SearchUsers
+
 class UserScreen extends StatefulWidget {
   final DocumentSnapshot doc;
   final String currentUserDisplayName;

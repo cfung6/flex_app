@@ -3,6 +3,7 @@ import 'package:flex/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//Parent: AuthWrapper
 class DisplayNameWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

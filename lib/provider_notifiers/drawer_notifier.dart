@@ -11,7 +11,7 @@ class DrawerStateNotifier with ChangeNotifier {
       case 'Search Users':
         return SearchUsers();
       case 'Search Sneakers':
-        return Search();
+        return SearchSneakers();
       case 'My Collection':
         return MyCollection();
       default:

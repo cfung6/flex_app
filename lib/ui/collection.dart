@@ -7,6 +7,9 @@ import 'package:flex/ui/sneaker_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//values that this widget consumes
+//  -list of sneakers of current user
+
 class Collection extends StatelessWidget {
   final List<Sneaker> viewedUsersSneakers; //collection of the user being viewed
   final String viewedUserDisplayName;

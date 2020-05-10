@@ -6,6 +6,9 @@ import 'package:flex/services/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//values that this widget consumes:
+//  -list of sneakers of current user
+
 class SneakerTile extends StatefulWidget {
   final Sneaker sneaker;
   final void Function(BuildContext context, Sneaker s) onTap;

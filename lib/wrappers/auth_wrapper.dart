@@ -5,6 +5,10 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import 'display_name_wrapper.dart';
 
+//Values that this screen consumes:
+//  -current user
+
+//Parent: Main
 class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

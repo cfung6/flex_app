@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flex/models/sneaker.dart';
-import 'package:flex/provider_models/following_list.dart';
 import 'package:flex/provider_notifiers/drawer_notifier.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/my_appbar.dart';
@@ -9,6 +8,11 @@ import 'package:flex/ui/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//Values that this screen consumes:
+//  -display name of current user
+
+//Screen is never pushed to navigation stack
+//Parent: DisplayNameWrapper
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,14 +37,6 @@ class Home extends StatelessWidget {
           catchError: (_, error) {
             log(error.toString());
             return List<Sneaker>();
-          },
-        ),
-        StreamProvider<FollowingList>.value(
-          value: DatabaseHelper(displayName).getFollowing(),
-          initialData: FollowingList(),
-          catchError: (_, error) {
-            log(error.toString());
-            return FollowingList();
           },
         ),
       ],

@@ -14,6 +14,11 @@ import 'package:provider/provider.dart';
 
 import 'loading.dart';
 
+//Values that SearchUsers consumes:
+//  -display name of the current user
+
+//This screen is never pushed to navigation stack
+//Parent: Home
 class SearchUsers extends StatefulWidget {
   @override
   _SearchUsersState createState() => _SearchUsersState();

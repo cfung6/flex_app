@@ -8,6 +8,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'loading.dart';
 
+//Parent: AuthWrapper
 class ContinueWith extends StatefulWidget {
   @override
   _ContinueWithState createState() => _ContinueWithState();

@@ -11,13 +11,13 @@ import 'package:provider/provider.dart';
 
 import 'loading.dart';
 
-class Search extends StatefulWidget {
+class SearchSneakers extends StatefulWidget {
   @override
-  _SearchState createState() => _SearchState();
+  _SearchSneakersState createState() => _SearchSneakersState();
 }
 
 //public for search bar to access
-class _SearchState extends State<Search> {
+class _SearchSneakersState extends State<SearchSneakers> {
   String _query = "";
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();

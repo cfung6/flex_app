@@ -3,6 +3,12 @@ import 'package:flex/ui/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//Values that this screen consumes:
+//  -list of sneakers of current user
+//  -display name of current user
+
+//This screen is never pushed to navigation stack
+//Parent: Home
 class MyCollection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

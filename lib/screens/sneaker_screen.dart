@@ -7,6 +7,14 @@ import 'package:provider/provider.dart';
 
 import 'loading.dart';
 
+//Values that SneakerScreen consumes:
+//  -list of sneakers of the current user
+
+//Screens that push SneakerScreen to navigator stack:
+//  -MyCollection
+//  -SearchSneakers
+//  -UserScreen
+
 class SneakerScreen extends StatefulWidget {
   final Sneaker sneaker;
   final String displayName;
