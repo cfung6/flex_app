@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flex/models/sneaker.dart';
+import 'package:flex/provider_models/following_list.dart';
 import 'package:flex/provider_notifiers/drawer_notifier.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/my_appbar.dart';
@@ -34,12 +35,12 @@ class Home extends StatelessWidget {
             return List<Sneaker>();
           },
         ),
-        StreamProvider<List<String>>.value(
+        StreamProvider<FollowingList>.value(
           value: DatabaseHelper(displayName).getFollowing(),
-          initialData: List<String>(),
+          initialData: FollowingList(),
           catchError: (_, error) {
             log(error.toString());
-            return List<String>();
+            return FollowingList();
           },
         ),
       ],

@@ -2,6 +2,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flex/models/sneaker.dart';
+import 'package:flex/provider_models/follower_list.dart';
+import 'package:flex/provider_models/follower_num.dart';
+import 'package:flex/provider_models/following_list.dart';
+import 'package:flex/provider_models/following_num.dart';
 import 'package:flex/screens/user_screen.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/search_bar.dart';
@@ -91,13 +95,40 @@ class _SearchUsersState extends State<SearchUsers> {
                               return List<Sneaker>();
                             },
                           ),
-                          StreamProvider<List<String>>.value(
+                          StreamProvider<FollowingList>.value(
                             value: DatabaseHelper(_userDisplayName)
                                 .getFollowing(),
-                            initialData: List<String>(),
+                            initialData: FollowingList(),
                             catchError: (_, error) {
                               log(error.toString());
-                              return List<String>();
+                              return FollowingList();
+                            },
+                          ),
+                          StreamProvider<FollowerList>.value(
+                            value: DatabaseHelper(_userDisplayName)
+                                .getFollowers(),
+                            initialData: FollowerList(),
+                            catchError: (_, error) {
+                              log(error.toString());
+                              return FollowerList();
+                            },
+                          ),
+                          StreamProvider<FollowerNum>.value(
+                            value: DatabaseHelper(_userDisplayName)
+                                .getNumFollowers(),
+                            initialData: FollowerNum(),
+                            catchError: (_, error) {
+                              log(error.toString());
+                              return FollowerNum();
+                            },
+                          ),
+                          StreamProvider<FollowingNum>.value(
+                            value: DatabaseHelper(_userDisplayName)
+                                .getNumFollowing(),
+                            initialData: FollowingNum(),
+                            catchError: (_, error) {
+                              log(error.toString());
+                              return FollowingNum();
                             },
                           ),
                         ],

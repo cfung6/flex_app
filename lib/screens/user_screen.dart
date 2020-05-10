@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flex/models/sneaker.dart';
+import 'package:flex/provider_models/following_list.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/collection.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,9 @@ class _UserScreenState extends State<UserScreen> {
     DatabaseHelper('').getDisplayNameFromDoc(widget.doc);
     List<Sneaker> sneakers =
     DatabaseHelper(userDisplayName).snapshotToSneakerList(widget.doc);
-    List<String> friends = Provider.of<List<String>>(context);
+    List<String> following = Provider
+        .of<FollowingList>(context)
+        .following;
 
     return _loading
         ? Loading()
@@ -55,7 +58,7 @@ class _UserScreenState extends State<UserScreen> {
           ),
           const SizedBox(height: 10.0),
           _displayFollowButton(
-              userDisplayName, friends.contains(userDisplayName)),
+              userDisplayName, following.contains(userDisplayName)),
           const SizedBox(height: 10.0),
           const Divider(
             thickness: 3.0,
@@ -84,14 +87,14 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  Widget _displayFollowButton(String displayName, bool areFriends) {
+  Widget _displayFollowButton(String displayName, bool amFollowing) {
     if (widget.currentUserDisplayName == displayName) {
       return Container(
         height: 0,
         width: 0,
       );
     }
-    return areFriends
+    return amFollowing
         ? Align(
       child: RaisedButton(
         onPressed: () async {

@@ -2,6 +2,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flex/models/sneaker.dart';
+import 'package:flex/provider_models/follower_list.dart';
+import 'package:flex/provider_models/follower_num.dart';
+import 'package:flex/provider_models/following_list.dart';
+import 'package:flex/provider_models/following_num.dart';
 
 class DatabaseHelper {
   final CollectionReference _userCollection =
@@ -98,11 +102,20 @@ class DatabaseHelper {
     }
   }
 
-  Stream<List<String>> getFollowing() {
+  Stream<FollowingList> getFollowing() {
     return _userCollection
         .document(_upperCaseName)
         .snapshots()
-        .map(_docSnapshotToFollowing);
+        .map(_docSnapshotToFollowing)
+        .map((list) => FollowingList(list));
+  }
+
+  Stream<FollowerList> getFollowers() {
+    return _userCollection
+        .document(_upperCaseName)
+        .snapshots()
+        .map(_docSnapshotToFollowers)
+        .map((list) => FollowerList(list));
   }
 
   List<String> _docSnapshotToFollowing(DocumentSnapshot doc) {
@@ -124,6 +137,27 @@ class DatabaseHelper {
     });
 
     return following;
+  }
+
+  List<String> _docSnapshotToFollowers(DocumentSnapshot doc) {
+    List<String> followers = [];
+
+    if (doc.data['followers'] == null) {
+      return List<String>();
+    }
+
+    Map<String, bool> friendData =
+    Map<String, bool>.from(doc.data['followers']);
+
+    if (friendData == null) {
+      return followers;
+    }
+
+    friendData.forEach((key, value) {
+      followers.add(key);
+    });
+
+    return followers;
   }
 
   Future<bool> follow(String displayName) async {
@@ -186,22 +220,22 @@ class DatabaseHelper {
     }
   }
 
-  Stream<int> getNumFollowing() {
+  Stream<FollowingNum> getNumFollowing() {
     return _userCollection.document(_upperCaseName).snapshots().map((doc) {
       if (doc['num_following'] == null) {
-        return 0;
+        return FollowingNum(0);
       } else {
-        return doc['num_following'];
+        return FollowingNum(doc['num_following']);
       }
     });
   }
 
-  Stream<int> getNumFollowers() {
+  Stream<FollowerNum> getNumFollowers() {
     return _userCollection.document(_upperCaseName).snapshots().map((doc) {
       if (doc['num_followers'] == null) {
-        return 0;
+        return FollowerNum(0);
       } else {
-        return doc['num_followers'];
+        return FollowerNum(doc['num_followers']);
       }
     });
   }
