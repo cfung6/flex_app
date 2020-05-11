@@ -1,10 +1,11 @@
 import 'package:flex/screens/my_collection.dart';
+import 'package:flex/screens/my_profile.dart';
 import 'package:flex/screens/search_sneakers.dart';
 import 'package:flex/screens/search_users.dart';
 import 'package:flutter/material.dart';
 
 class DrawerStateNotifier with ChangeNotifier {
-  String currentScreen = 'My Collection';
+  String currentScreen = 'My Profile';
 
   Widget get getScreen {
     switch (currentScreen) {
@@ -14,6 +15,8 @@ class DrawerStateNotifier with ChangeNotifier {
         return SearchSneakers();
       case 'My Collection':
         return MyCollection();
+      case 'My Profile':
+        return MyProfile();
       default:
         return null;
     }

@@ -19,7 +19,7 @@ import 'loading.dart';
 
 //Screens that push this screen to navigator stack:
 //  -SearchUsers
-
+//  -MyProfile (does not push, is parent)
 class UserScreen extends StatefulWidget {
   final DocumentSnapshot doc;
   final String currentUserDisplayName;

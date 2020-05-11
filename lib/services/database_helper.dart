@@ -37,7 +37,7 @@ class DatabaseHelper {
   List<Sneaker> snapshotToSneakerList(DocumentSnapshot doc) {
     List<Sneaker> sneakerList = [];
 
-    if (doc.data['sneakers'] == null) {
+    if (doc == null || doc.data == null || doc.data['sneakers'] == null) {
       return sneakerList;
     }
 
@@ -323,6 +323,10 @@ class DatabaseHelper {
     return true;
   }
 
+  Stream<DocumentSnapshot> getDocumentFromDisplayName() {
+    return _userCollection.document(_upperCaseName).snapshots();
+  }
+
   Future<List<DocumentSnapshot>> getUsersContainingQuery(String query) async {
     final snapshot = await _userCollection.getDocuments();
     final List<DocumentSnapshot> users = [];
@@ -338,6 +342,10 @@ class DatabaseHelper {
   }
 
   String getDisplayNameFromDoc(DocumentSnapshot doc) {
+    if (doc == null || doc.data == null) {
+      return '';
+    }
+
     String name = doc.data['display_name'];
 
     if (name == null) {

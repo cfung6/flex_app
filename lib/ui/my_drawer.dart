@@ -77,7 +77,7 @@ class MyDrawer extends StatelessWidget {
             ListTile(
               title: const Text('Search Users'),
               leading: const Icon(
-                Icons.person,
+                Icons.people,
               ),
               onTap: () {
                 Navigator.of(context).pop();
@@ -92,6 +92,16 @@ class MyDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 drawerNotifier.updateScreen('Search Sneakers');
+              },
+            ),
+            ListTile(
+              title: const Text('My Profile'),
+              leading: const Icon(
+                Icons.person,
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                drawerNotifier.updateScreen('My Profile');
               },
             ),
             ListTile(
