@@ -58,78 +58,80 @@ class _SneakerScreenState extends State<SneakerScreen> {
         ? Loading()
         : Container(
       color: Colors.white,
-      child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        children: <Widget>[
-          CachedNetworkImage(
-            imageUrl: widget.sneaker.bigImage,
-            placeholder: (_, __) =>
-                Center(child: CircularProgressIndicator()),
-            errorWidget: (_, __, ___) =>
-                Image.asset('assets/images/no_image.png'),
-          ),
-          const SizedBox(height: 10.0),
-          Text(
-            widget.sneaker.name,
-            textAlign: TextAlign.center,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline5
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20.0),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          children: <Widget>[
+            CachedNetworkImage(
+              imageUrl: widget.sneaker.bigImage,
+              placeholder: (_, __) =>
+                  Center(child: CircularProgressIndicator()),
+              errorWidget: (_, __, ___) =>
+                  Image.asset('assets/images/no_image.png'),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              widget.sneaker.name,
+              textAlign: TextAlign.center,
               style: Theme
                   .of(context)
                   .textTheme
-                  .subtitle1,
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Release date: ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: _releaseDate),
-              ],
+                  .headline5
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
-          ),
-          const SizedBox(height: 10.0),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
+            const SizedBox(height: 20.0),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle1,
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Release date: ',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: _releaseDate),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle1,
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Price: ',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: '$_price USD'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            _sneakerInList
+                ? _addedToCollectionButton()
+                : _addToCollectionButton(),
+            const SizedBox(height: 10.0),
+            const Divider(
+              thickness: 3.0,
+              indent: 90.0,
+              endIndent: 90.0,
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              'People you follow that own this shoe:',
+              textAlign: TextAlign.center,
               style: Theme
                   .of(context)
                   .textTheme
-                  .subtitle1,
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Price: ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: '$_price USD'),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20.0),
-          _sneakerInList
-              ? _addedToCollectionButton()
-              : _addToCollectionButton(),
-          const SizedBox(height: 10.0),
-          const Divider(
-            thickness: 3.0,
-            indent: 90.0,
-            endIndent: 90.0,
-          ),
-          const SizedBox(height: 10.0),
-          Text(
-            'People you follow that own this shoe:',
-            textAlign: TextAlign.center,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline6,
-          )
-        ],
+                  .headline6,
+            )
+          ],
+        ),
       ),
     );
   }

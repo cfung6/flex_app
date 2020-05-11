@@ -7,6 +7,7 @@ import 'package:flex/provider_models/following_list.dart';
 import 'package:flex/provider_models/following_num.dart';
 import 'package:flex/services/database_helper.dart';
 import 'package:flex/ui/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,53 +49,72 @@ class _UserScreenState extends State<UserScreen> {
 
     return _loading
         ? Loading()
-        : Scaffold(
-      body: Column(
-        children: <Widget>[
-          const SizedBox(height: 20.0),
-          Image.asset(
-            'assets/images/no_image.png',
-            height: 150.0,
+        : Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: <Widget>[
+              const SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Image.asset(
+                    'assets/images/no_image.png',
+                    height: 150.0,
+                    width: 150.0,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        userDisplayName,
+                        textAlign: TextAlign.center,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5
+                            .copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      const SizedBox(height: 10.0),
+                      _displayFollowButton(userDisplayName,
+                          following.contains(userDisplayName)),
+                      const SizedBox(height: 10.0),
+                      _buildFollowerAndFollowingCount(),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10.0),
+              const Divider(
+                thickness: 3.0,
+                indent: 90.0,
+                endIndent: 90.0,
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                'Collection',
+                textAlign: TextAlign.center,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6,
+              ),
+              const SizedBox(height: 10.0),
+              Collection(
+                viewedUsersSneakers: sneakers,
+                viewedUserDisplayName: userDisplayName,
+                currentUserDisplayName: widget.currentUserDisplayName,
+                showMenu: false,
+                currentUserSameAsViewedUser: false,
+              ),
+            ],
           ),
-          Text(
-            userDisplayName,
-            textAlign: TextAlign.center,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline4
-                .copyWith(
-                fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-          const SizedBox(height: 10.0),
-          _displayFollowButton(
-              userDisplayName, following.contains(userDisplayName)),
-          const SizedBox(height: 20.0),
-          _buildFollowerAndFollowingCount(),
-          const SizedBox(height: 10.0),
-          const Divider(
-            thickness: 3.0,
-            indent: 90.0,
-            endIndent: 90.0,
-          ),
-          const SizedBox(height: 10.0),
-          Text(
-            'Collection',
-            textAlign: TextAlign.center,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline6,
-          ),
-          const SizedBox(height: 10.0),
-          Collection(
-            viewedUsersSneakers: sneakers,
-            viewedUserDisplayName: userDisplayName,
-            currentUserDisplayName: widget.currentUserDisplayName,
-            showMenu: false,
-            currentUserSameAsViewedUser: false,
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -123,7 +143,7 @@ class _UserScreenState extends State<UserScreen> {
           children: <Widget>[
             Image.asset(
               'assets/images/remove_friend.png',
-              height: 30.0,
+              height: 25.0,
             ),
             const SizedBox(width: 10.0),
             const Text('Unfollow'),
@@ -134,7 +154,7 @@ class _UserScreenState extends State<UserScreen> {
           borderRadius: BorderRadius.circular(18.0),
         ),
         padding:
-        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       ),
     )
         : Align(
